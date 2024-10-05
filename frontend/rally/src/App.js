@@ -5,6 +5,7 @@ import { Bar } from './main/horizontalBar.jsx';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Events from './pages/Events';
+import ProfilePage from './profile/ProfilePage.jsx';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/event" element={<Events />} />
+        <Route path="/profile" element={<ProfilePage/>} />
       </Routes>
     </Router>
     // <div className="App">
