@@ -2,10 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Create_event_button() {
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     const handleClick = () => {
-        history.push("/create-event");
+        navigate("/create-event");
     };
 
     return (
