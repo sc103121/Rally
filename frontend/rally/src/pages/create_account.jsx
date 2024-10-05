@@ -34,6 +34,7 @@ export default function Create_account() {
 
             const data = await response.json();
             localStorage.setItem('token', data.token);
+            localStorage.setItem('email', data.email);
             setError(''); // Clear error if validation passes
             navigate('/home'); // Navigate to home page
         } catch (err) {
