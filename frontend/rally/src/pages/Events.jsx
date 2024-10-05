@@ -1,172 +1,98 @@
 import React from "react";
 import "./Events.css";
 import TitleBox from "../components/TitleBox";
-import "./RoundedLayout.css"; // Import the CSS file'
 import "../components/Box.css";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
-import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import AttendeeBox from "../components/AttendeeBox";
 import BroadcastBox from "../components/BroadcastBox";
 import RoundedBox from "../components/Box";
-import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
-
-function InfoBox() {
-  return (
-    <div className="layout-wrapper">
-      {/* Main Box taking up 60% of the width */}
-      <div className="main-box rounded-box">
-        {/* <h2>Main Box (60%)</h2> */}
-        Description
-        <br />
-        <br />
-        Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nisl
-        nec nisl.
-      </div>
-
-      {/* Column Box taking up 40% of the width, with 3 smaller boxes */}
-      <div className="column-box">
-        <div className="small-box rounded-box">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              alignContent: "space-around",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              gap: "0.5rem",
-            }}
-          >
-            <LocationOnOutlinedIcon />{" "}
-            <div>
-              Location
-              <br />
-              <a style={{ color: "gray" }}>Location</a>
-            </div>
-          </div>
-        </div>
-        <div className="small-box rounded-box">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              alignContent: "space-around",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              gap: "0.5rem",
-            }}
-          >
-            <AccessTimeOutlinedIcon />{" "}
-            <div
-              style={{
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              Date
-              <br />
-              <a style={{ color: "gray" }}>Time</a>
-            </div>
-          </div>
-        </div>
-        <div
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            display: "flex",
-            flexDirection: "row",
-            flexShrink: 1,
-          }}
-          className="small-box rounded-box"
-        >
-          Going <CheckOutlinedIcon />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// function AttendeeBox() {
-//   return (
-//     <div className="layout-wrapper">
-//       <div className="rounded-box">
-//         Attendees
-//         <br />
-//         <br />
-//         <AttendeeBox />
-//         {/* <div style={{ display: "flex", direction: "row" }} className="attendee">
-//           <img
-//             src="https://randomuser.me/api/portraits" // Random user image
-//             alt="User"
-//             style={{
-//               borderRadius: "50%",
-//               width: "100%",
-//               height: "50px",
-//               marginRight: "1rem",
-//             }}
-//           />
-//           <div>
-//             <b>John Doe</b>
-//             <br />
-//             <a style={{ color: "gray" }}>
-//               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-//             </a>
-//           </div>
-//         </div> */}
-//         <div className="attendee">
-//           <img
-//             src="https://randomuser.me/api/photos" // Random user image
-//             alt="User"
-//             style={{
-//               borderRadius: "50%",
-//               width: "50px",
-//               height: "50px",
-//               marginRight: "1rem",
-//             }}
-//           />
-//           <div>
-//             <b>Jane Doe</b>
-//             <br />
-//             <a style={{ color: "gray" }}>
-//               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-//             </a>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+import ShareButton from "../components/ShareButton";
+import { useState } from "react";
+import InfoBox from "../components/InfoBox";
+import Modal from "../components/Modal";
 
 export const Events = () => {
+  const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
+  const [isAttendeeModalOpen, setIsAttendeeModalOpen] = useState(false);
+  const [isBroadcastModalOpen, setIsBroadcastModalOpen] = useState(false);
+
+  const handleDescriptionClick = () => {
+    setIsDescriptionModalOpen(true);
+  };
+
+  const handleCloseDescriptionModal = () => {
+    setIsDescriptionModalOpen(false);
+  };
+
+  const handleAttendeeClick = () => {
+    setIsAttendeeModalOpen(true);
+  };
+
+  const handleCloseAttendeeModal = () => {
+    setIsAttendeeModalOpen(false);
+  };
+
+  const handleBroadcastClick = () => {
+    setIsBroadcastModalOpen(true);
+  };
+
+  const handleCloseBroadcastModal = () => {
+    setIsBroadcastModalOpen(false);
+  };
+
   return (
-    // <div className="box">
-    //   <div className="events-page">
-    //     {/* Wishlist
-    //   TitleBox
-    //   DescriptionBox
-    //   Location DateTime RSVP
-    //   Attendees
-    //   Broadcasts
-    //   Donate
-    //   Share*/}
-    //     <TitleBox />
-    //   </div>
-    // </div>
-    <div className="background">
-      <TitleBox />
-      <InfoBox />
-      <AttendeeBox />
-      <BroadcastBox />
-      <div className="rounded-box-container">
-        <RoundedBox>Donate</RoundedBox>
-        <RoundedBox>
-          <IosShareOutlinedIcon />
-        </RoundedBox>
+    <>
+      <div
+        className={`background ${
+          isDescriptionModalOpen || isAttendeeModalOpen || isBroadcastModalOpen
+            ? "blurred"
+            : ""
+        }`}
+      >
+        <TitleBox />
+        <InfoBox onDescriptionClick={handleDescriptionClick} />
+        <AttendeeBox onAttendeeClick={handleAttendeeClick} />
+        <BroadcastBox onBroadcastClick={handleBroadcastClick} />
+        <div className="rounded-box-container">
+          <RoundedBox>Donate</RoundedBox>
+          <ShareButton />
+        </div>
       </div>
-    </div>
+      {isDescriptionModalOpen && (
+        <Modal onClose={handleCloseDescriptionModal}>
+          <h2>Full Description</h2>
+          <p>
+            Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec
+            nisl nec nisl. Lorum ipsum dolor sit amet, consectetur adipiscing
+            elit. Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet,
+            consectetur adipiscing elit. Nullam nec nisl nec nisl. Lorum ipsum
+            dolor sit amet, consectetur adipiscing elit. Nullam nec nisl nec
+            nisl.
+          </p>
+        </Modal>
+      )}
+      {isAttendeeModalOpen && (
+        <Modal onClose={handleCloseAttendeeModal}>
+          <h2>Attendees</h2>
+          <ul>
+            <li>Attendee 1</li>
+            <li>Attendee 2</li>
+            <li>Attendee 3</li>
+            <li>Attendee 4</li>
+          </ul>
+        </Modal>
+      )}
+      {isBroadcastModalOpen && (
+        <Modal onClose={handleCloseBroadcastModal}>
+          <h2>Broadcasts</h2>
+          <ul>
+            <li>Broadcast 1</li>
+            <li>Broadcast 2</li>
+            <li>Broadcast 3</li>
+            <li>Broadcast 4</li>
+          </ul>
+        </Modal>
+      )}
+    </>
   );
 };
 
