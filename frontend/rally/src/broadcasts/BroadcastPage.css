@@ -1,0 +1,106 @@
+/* BroadcastPage.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100%; /* Ensure full height */
+  }
+  
+  .broadcast-container {
+    background-color: #b09c88b2;
+    padding: 20px;
+    border-radius: 20px; /* Rounded corners */
+    backdrop-filter: blur(10px); /* Background blur effect */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow for elevation */
+  }
+  
+  .broadcast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .broadcast-header h3 {
+    color: black;
+    margin: 0;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: black;
+  }
+  
+  /* Make the broadcast list scrollable */
+  .broadcast-list {
+    flex-grow: 1; /* Allow it to grow and take remaining space */
+    overflow-y: auto; /* Make it scrollable */
+    padding-right: 10px; /* Add space for the scrollbar */
+    margin-bottom: 10px;
+    max-height: calc(100vh - 180px); /* Adjust height to avoid overflowing the screen */
+  }
+  
+  .broadcast-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2); /* Slightly transparent background for items */
+    border-radius: 10px; /* Rounded corners for broadcast items */
+    margin-bottom: 10px;
+  }
+  
+  .broadcast-item p {
+    color: black;
+    margin: 0;
+  }
+  
+  .megaphone-icon {
+    font-size: 24px;
+    margin-right: 10px;
+    color: black; /* Icon color */
+  }
+  
+  .broadcast-form {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.4); /* Lighter background for the input bar */
+    border-radius: 25px; /* Rounded input bar */
+    padding: 10px;
+    padding-left: 15px;
+  }
+  
+  .broadcast-form input {
+    flex: 1; /* Input takes up remaining space */
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background: none; /* Transparent input */
+    color: black;
+    font-size: 16px;
+  }
+  
+  .broadcast-form input::placeholder {
+    color: black;
+    opacity: 0.6; /* Placeholder color */
+  }
+  
+  .send-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .send-btn:hover {
+    color: #ffcccb; /* Lighten icon color on hover */
+  }
+  
