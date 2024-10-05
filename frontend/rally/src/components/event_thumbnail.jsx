@@ -2,6 +2,7 @@ import React from 'react'
 
 const events = [
     {
+        id: 1,
         title: "Cornell Campus Rally",
         description: "Join us for a peaceful protest to raise awareness about climate change.",
         date: "2023-10-15",
@@ -10,6 +11,7 @@ const events = [
         isPrivate: false
     },
     {
+        id: 2,
         title: "Cornell Sustainability March",
         description: "March with us to promote sustainable practices on campus.",
         date: "2023-11-05",
@@ -18,6 +20,7 @@ const events = [
         isPrivate: false
     },
     {
+        id: 3,
         title: "Cornell Diversity and Inclusion Rally",
         description: "Stand together to support diversity and inclusion within our community.",
         date: "2023-12-01",
@@ -26,6 +29,7 @@ const events = [
         isPrivate: true
     },
     {
+        id: 4,
         title: "Cornell Mental Health Awareness Walk",
         description: "Walk to raise awareness about mental health issues and support services.",
         date: "2024-01-20",
