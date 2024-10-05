@@ -1,6 +1,5 @@
 import React from 'react';
-import '../App.css';
-
+import './componentsstyle.css';
 export default function Search() {
 return (
     <div>
