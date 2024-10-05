@@ -15,4 +15,5 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* soft shadow */
   backdrop-filter: blur(10px); /* blur effect for transparency */
   /* display: inline-block; */
+  flex-grow: 1;
 }

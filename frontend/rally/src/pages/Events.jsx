@@ -7,6 +7,9 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import AttendeeBox from "../components/AttendeeBox";
+import BroadcastBox from "../components/BroadcastBox";
+import RoundedBox from "../components/Box";
+import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 
 function InfoBox() {
   return (
@@ -75,6 +78,7 @@ function InfoBox() {
             alignItems: "center",
             display: "flex",
             flexDirection: "row",
+            flexShrink: 1,
           }}
           className="small-box rounded-box"
         >
@@ -155,6 +159,13 @@ export const Events = () => {
       <TitleBox />
       <InfoBox />
       <AttendeeBox />
+      <BroadcastBox />
+      <div className="rounded-box-container">
+        <RoundedBox>Donate</RoundedBox>
+        <RoundedBox>
+          <IosShareOutlinedIcon />
+        </RoundedBox>
+      </div>
     </div>
   );
 };

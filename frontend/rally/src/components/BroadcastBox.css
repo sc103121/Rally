@@ -1,0 +1,39 @@
+/* BroadcastBox container */
+.broadcast-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: rgba(240, 240, 240, 0.9); /* Adjust background color */
+}
+
+/* Container for broadcasts (list of items) */
+.broadcasts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Individual broadcast item (icon + text) */
+.broadcast-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f4f4f4;
+}
+
+/* Icon for the broadcast item */
+.broadcast-icon {
+  font-size: 24px;
+  color: #333;
+}
+
+/* Broadcast text with ellipses for overflow */
+.broadcast-text {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #333;
+}
