@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Events from './pages/Events';
 import ProfilePage from './profile/ProfilePage.jsx';
 import CreateEventPage from './pages/Create_Event.jsx';
+import BroadcastPage from './broadcasts/BroadcastPage.js';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/event" element={<Events />} />
         <Route path="/profile" element={<ProfilePage/>} />
         <Route path="/create-event" element={<CreateEventPage />} /> {/* Add the new route */}
+        <Route path="/broadcast" element={<BroadcastPage/>} />
       </Routes>
     </Router>
     // <div className="App">
