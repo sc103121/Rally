@@ -18,11 +18,33 @@ function CreateEventPage() {
             [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
         }));
     };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log(formData);
+        
+        // Print the entire form except the image
+        const { eventImage, ...formWithoutImage } = formData;
+        console.log('Form data without image:', formWithoutImage);
+
+        try {
+            const formDataToSend = new FormData();
+            for (const key in formData) {
+                formDataToSend.append(key, formData[key]);
+            }
+
+            const response = await fetch('http://localhost:3001/events', {
+                method: 'POST',
+                body: formDataToSend
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            console.log('Event created successfully:', result);
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
     };
 
     return (
