@@ -17,7 +17,7 @@ export default function Create_account() {
 
         try {
             // Replace with your account creation logic
-            const response = await fetch('http://localhost:3001/create_account', {
+            const response = await fetch('http://localhost:3001/users/create_account', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
