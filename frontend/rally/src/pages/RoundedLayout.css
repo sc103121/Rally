@@ -40,9 +40,20 @@
   align-items: center;
   padding: 0.75rem;
   /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
-  /* flex-grow: 0; Makes each small box expand equally in height */
+  flex-grow: 0;
   /* height: auto; */
   /* flex-shrink: 1; */
   /* width: 100%; */
   width: auto;
+}
+
+/* Flex container for two RoundedBox components */
+.rounded-box-container {
+  display: flex;
+  gap: 20px; /* Space between the two boxes */
+  justify-content: space-evenly; /* Ensures the boxes are placed side-by-side */
+  /* align-items: stretch; */
+  width: 100%;
+  margin-top: 1rem;
+  /* align-content: stretch; */
 }
