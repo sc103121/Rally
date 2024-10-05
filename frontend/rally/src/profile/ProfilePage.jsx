@@ -12,16 +12,14 @@ function ProfilePage() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/';
+  };
+
   return (
     <div className="profile-container">
       <div className="profile-picture">
-        <input
-          type="file"
-          id="fileInput"
-          accept="image/*"
-          style={{ display: 'none' }}
-          onChange={handleImageChange}
-        />
         <label htmlFor="fileInput" className="upload-label">
           {selectedImage ? (
             <img src={selectedImage} alt="Profile" className="profile-img" />
@@ -31,12 +29,9 @@ function ProfilePage() {
         </label>
       </div>
       <div className="input-field">
-        <input type="text" placeholder="Username" />
+        <p>{localStorage.getItem('email') || 'No email found'}</p>
       </div>
-      <div className="input-field">
-        <input type="password" placeholder="Change Password" />
-      </div>
-      <button className="delete-button">Delete</button>
+      <button className="delete-button" onClick={handleLogout}>Logout</button>
     </div>
   );
 }
