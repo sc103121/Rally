@@ -1,6 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
-const events = [
+export const events = [
     {
         id: 1,
         title: "Cornell Campus Rally",
@@ -8,6 +9,8 @@ const events = [
         date: "2023-10-15",
         time: "12:00 PM",
         location: "Cornell University, Ithaca, NY",
+        goal: 1000,
+        raised: 300,
         isPrivate: false
     },
     {
@@ -17,6 +20,8 @@ const events = [
         date: "2023-11-05",
         time: "2:00 PM",
         location: "Cornell University, Ithaca, NY",
+        goal: 500,
+        raised: 100,
         isPrivate: false
     },
     {
@@ -26,6 +31,8 @@ const events = [
         date: "2023-12-01",
         time: "1:00 PM",
         location: "Cornell University, Ithaca, NY",
+        goal: 100,
+        raised: 50,
         isPrivate: true
     },
     {
@@ -35,6 +42,8 @@ const events = [
         date: "2024-01-20",
         time: "11:00 AM",
         location: "Cornell University, Ithaca, NY",
+        goal: 100,
+        raised: 10,
         isPrivate: false
     }
 ];
@@ -62,35 +71,43 @@ return (
             });
             return (
                 <div key={date}>
-                    <h3 style={{ margin: '16px 0', color: '#333' }}>{formattedDate}</h3>
-                    {groupedEvents[date].map((eventDetails, index) => (
-                        <div key={index} style={{ 
-                            position: 'relative',
-                            border: '1px solid #ccc', 
-                            borderRadius: '8px', 
-                            padding: '16px', 
-                            margin: '8px 0', 
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
-                            backgroundColor: '#fff',
-                            maxWidth: '400px'
-                        }}>
-                            <h4 style={{ margin: '0 0 8px 0' }}>{eventDetails.title}</h4>
-                            <p style={{ margin: '0 0 8px 0', color: '#555' }}>
-                                {eventDetails.description.length > 180 
-                                    ? `${eventDetails.description.substring(0, 180)}...` 
-                                    : eventDetails.description}
-                            </p>
-                            <p style={{ margin: '0', color: '#777' }}>{eventDetails.location}</p>
-                            {eventDetails.isPrivate && (
-                                <span style={{ 
-                                    position: 'absolute', 
-                                    bottom: '8px', 
-                                    right: '8px', 
-                                    fontSize: '16px' 
-                                }}>🔒</span>
-                            )}
-                        </div>
-                    ))}
+                    <ul>
+                        <h3 style={{ margin: '16px 0', color: '#333' }}>{formattedDate}</h3>
+                        {groupedEvents[date].map((eventDetails, index) => (
+                            <Link 
+                                to={`/event/${eventDetails.id}`} 
+                                key={eventDetails.id}
+                                style={{ textDecoration: 'none', color: 'inherit' }} // This preserves the styling
+                            >
+                            <div key={index} style={{ 
+                                position: 'relative',
+                                border: '1px solid #ccc', 
+                                borderRadius: '8px', 
+                                padding: '16px', 
+                                margin: '8px 0', 
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
+                                backgroundColor: '#fff',
+                                maxWidth: '400px'
+                            }}>
+                                <h4 style={{ margin: '0 0 8px 0' }}>{eventDetails.title}</h4>
+                                <p style={{ margin: '0 0 8px 0', color: '#555' }}>
+                                    {eventDetails.description.length > 180 
+                                        ? `${eventDetails.description.substring(0, 180)}...` 
+                                        : eventDetails.description}
+                                </p>
+                                <p style={{ margin: '0', color: '#777' }}>{eventDetails.location}</p>
+                                {eventDetails.isPrivate && (
+                                    <span style={{ 
+                                        position: 'absolute', 
+                                        bottom: '8px', 
+                                        right: '8px', 
+                                        fontSize: '16px' 
+                                    }}>🔒</span>
+                                )}
+                            </div>
+                            </Link>
+                        ))}
+                    </ul>
                 </div>
             );
         })}
