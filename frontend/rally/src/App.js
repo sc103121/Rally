@@ -15,7 +15,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Create_account />} />
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/home" element={<Home />} />
 
         <Route path="/event" element={<Events />} />
         <Route path="/profile" element={<ProfilePage/>} />
