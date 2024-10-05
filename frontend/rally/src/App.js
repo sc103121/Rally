@@ -16,7 +16,7 @@ function App() {
 
     useEffect(() => {
       // Replace this with your actual login check logic
-      const userLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      const userLoggedIn = localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null;
       setIsLoggedIn(userLoggedIn);
     }, []);
 

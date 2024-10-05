@@ -26,6 +26,9 @@ export default function Create_account() {
             });
 
             if (!response.ok) {
+                const errorData = await response.json();
+                alert(errorData.error);
+                console.log(errorData)
                 throw new Error('Account creation failed');
             }
 
