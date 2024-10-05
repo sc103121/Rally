@@ -9,7 +9,7 @@ function BroadcastPage() {
 
   // Fetch broadcasts from the backend
   useEffect(() => {
-    fetch(`${url}/api/broadcasts`)
+    fetch(`${url}/broadcasts/api/broadcasts`)
       .then((res) => res.json())
       .then((data) => setBroadcasts(data));
   }, []);
@@ -24,7 +24,7 @@ function BroadcastPage() {
     e.preventDefault();
     if (!newBroadcast) return;
 
-    const response = await fetch(`${url}/api/broadcasts`, {
+    const response = await fetch(`${url}/broadcasts/api/broadcasts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
