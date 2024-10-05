@@ -9,8 +9,10 @@ import ShareButton from "../components/ShareButton";
 import { useState } from "react";
 import InfoBox from "../components/InfoBox";
 import Modal from "../components/Modal";
+import { useParams } from "react-router-dom";
 
-export const Events = () => {
+export const Events = ({ event }) => {
+  const { id } = useParams();
   const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
   const [isAttendeeModalOpen, setIsAttendeeModalOpen] = useState(false);
   const [isBroadcastModalOpen, setIsBroadcastModalOpen] = useState(false);
