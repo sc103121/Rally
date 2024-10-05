@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Events from './pages/Events';
 import ProfilePage from './profile/ProfilePage.jsx';
+import CreateEventPage from './pages/Create_Event.jsx';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/event" element={<Events />} />
         <Route path="/profile" element={<ProfilePage/>} />
+        <Route path="/create-event" element={<CreateEventPage />} /> {/* Add the new route */}
       </Routes>
     </Router>
     // <div className="App">
