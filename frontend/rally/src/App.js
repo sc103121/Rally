@@ -7,13 +7,16 @@ import Home from './pages/Home';
 import Events from './pages/Events';
 import ProfilePage from './profile/ProfilePage.jsx';
 import CreateEventPage from './pages/Create_Event.jsx';
+import Create_account from './pages/create_account.jsx';
 import BroadcastPage from './broadcasts/BroadcastPage.js';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Create_account />} />
+        {/* <Route path="/" element={<Home />} /> */}
+
         <Route path="/event" element={<Events />} />
         <Route path="/profile" element={<ProfilePage/>} />
         <Route path="/create-event" element={<CreateEventPage />} /> {/* Add the new route */}

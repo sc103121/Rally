@@ -5,7 +5,7 @@ function BroadcastPage() {
   const [broadcasts, setBroadcasts] = useState([]);
   const [newBroadcast, setNewBroadcast] = useState('');
 
-  const url = "http://localhost:5001";
+  const url = "http://localhost:3001";
 
   // Fetch broadcasts from the backend
   useEffect(() => {
