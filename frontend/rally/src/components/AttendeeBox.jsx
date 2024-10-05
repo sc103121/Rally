@@ -2,7 +2,7 @@ import React from "react";
 import "./AttendeeBox.css"; // Import the CSS file
 import RoundedBox from "./Box";
 
-const AttendeeBox = () => {
+const AttendeeBox = ({ onAttendeeClick }) => {
   // Example array of attendees (could be images or objects in a real scenario)
   const attendees = [
     {
@@ -28,7 +28,7 @@ const AttendeeBox = () => {
   ];
 
   return (
-    <RoundedBox width="100%" margin="1rem 0 0 0">
+    <RoundedBox width="100%" margin="1rem 0 0 0" onClick={onAttendeeClick}>
       Attendees
       <br /> <br />
       <div className="attendees-row">
