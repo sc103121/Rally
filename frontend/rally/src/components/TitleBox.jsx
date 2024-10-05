@@ -2,18 +2,17 @@ import React from "react";
 import RoundedBox from "./Box.jsx";
 import ProgressBar from "./ProgressBar.jsx";
 
-function TitleBox() {
-  const goal = 1000;
-  const raised = 500;
+// The TitleBox now accepts props for dynamic data
+function TitleBox({ title, goal, raised }) {
   return (
     <RoundedBox width="100%">
       <div
         style={{ fontSize: "30px", marginBottom: "2rem", marginTop: "1rem" }}
       >
-        Title
+        {title} {/* Use the title prop */}
       </div>
 
-      <ProgressBar goal={goal} raised={raised} />
+      <ProgressBar goal={goal} raised={raised} /> 
     </RoundedBox>
   );
 }

@@ -16,8 +16,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Create_account />} />
         <Route path="/home" element={<Home />} />
-
-        <Route path="/event" element={<Events />} />
+        <Route path="/event/:id" element={<Events />} />
+        {/* <Route path="/event" element={<Events />} /> */}
         <Route path="/profile" element={<ProfilePage/>} />
         <Route path="/create-event" element={<CreateEventPage />} /> {/* Add the new route */}
         <Route path="/broadcast" element={<BroadcastPage/>} />
