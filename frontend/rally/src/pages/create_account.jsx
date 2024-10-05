@@ -1,22 +1,44 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Create_account() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [alias, setAlias] = React.useState('');
     const [error, setError] = React.useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email.endsWith('@cornell.edu')) {
             setError('Email must be a Cornell email ending in @cornell.edu');
             return;
         }
-        // Handle account creation logic here
-        console.log('Email:', email);
-        console.log('Password:', password);
-        console.log('Alias:', alias);
-        setError(''); // Clear error if validation passes
+
+        try {
+            // Replace with your account creation logic
+            const response = await fetch('http://localhost:3001/users/create_account', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password, alias }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(errorData.error);
+                console.log(errorData)
+                throw new Error('Account creation failed');
+            }
+
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            setError(''); // Clear error if validation passes
+            navigate('/home'); // Navigate to home page
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     return (

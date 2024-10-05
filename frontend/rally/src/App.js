@@ -9,39 +9,29 @@ import ProfilePage from './profile/ProfilePage.jsx';
 import CreateEventPage from './pages/Create_Event.jsx';
 import Create_account from './pages/create_account.jsx';
 import BroadcastPage from './broadcasts/BroadcastPage.js';
+import { useEffect, useState } from 'react';
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Create_account />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/event/:id" element={<Events />} />
-        {/* <Route path="/event" element={<Events />} /> */}
-        <Route path="/profile" element={<ProfilePage/>} />
-        <Route path="/create-event" element={<CreateEventPage />} /> {/* Add the new route */}
-        <Route path="/broadcast" element={<BroadcastPage/>} />
-      </Routes>
-    </Router>
-    // <div className="App">
-    //   {/* <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header> */}
-    //   <Background/>
-    //   <Bar/>
-    // </div>
-  );
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+      // Replace this with your actual login check logic
+      const userLoggedIn = localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null;
+      setIsLoggedIn(userLoggedIn);
+    }, []);
+
+    return (
+      <Router>
+        <Routes>
+          <Route path="/" element={isLoggedIn ? <Home /> : <Create_account />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/event/:id" element={<Events />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/create-event" element={<CreateEventPage />} />
+          <Route path="/broadcast" element={<BroadcastPage />} />
+        </Routes>
+      </Router>
+    );
 }
 
 export default App;

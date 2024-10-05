@@ -31,7 +31,7 @@ function CreateEventPage() {
                 formDataToSend.append(key, formData[key]);
             }
 
-            const response = await fetch('http://localhost:3001/events', {
+            const response = await fetch('http://localhost:3001/events/events', {
                 method: 'POST',
                 body: formDataToSend
             });
