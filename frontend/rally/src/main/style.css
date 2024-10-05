@@ -1,0 +1,28 @@
+.box {
+    height: 721px;
+    width: 415px;
+}
+
+.box .main-page {
+    background: linear-gradient(180deg, #fcb045, #fd1d1d); /* gradient from orange to red */
+    height: 721px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 415px;
+}
+
+.bar {
+    height: 47px;
+    width: 284px;
+}
+
+.bar .rectangle {
+    background-color: #fedfbfb2;
+    border-radius: 15px;
+    height: 47px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 284px;
+}
