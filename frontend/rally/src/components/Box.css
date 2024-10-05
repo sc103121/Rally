@@ -1,0 +1,18 @@
+.rounded-box {
+  border: 2px solid rgba(255, 255, 255, 0.5); /* semi-transparent white border */
+  border-radius: 15px; /* rounded corners */
+  background-color: rgba(255, 255, 255, 0.2); /* semi-transparent background */
+  /* padding: 1rem; */
+  width: 100%; /* Full width */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: auto;
+  padding-right: auto;
+  display: flex; /* Flexible box model */
+  flex-direction: column; /* Stack children vertically */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* soft shadow */
+  backdrop-filter: blur(10px); /* blur effect for transparency */
+  /* display: inline-block; */
+}

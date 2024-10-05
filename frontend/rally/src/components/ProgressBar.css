@@ -1,0 +1,24 @@
+.progress-container {
+  width: 80%; /* Full width of the container */
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+  border-radius: 10px; /* Rounded corners */
+  overflow: hidden; /* Ensures the progress bar stays within bounds */
+  position: relative;
+}
+
+.progress-bar {
+  height: 20px;
+  background-color: #4caf50; /* Green color for the progress */
+  border-radius: 10px 0 0 10px; /* Only round the left corners */
+  text-align: center;
+  color: white;
+  line-height: 20px; /* Center the text vertically */
+  transition: width 0.5s ease-in-out; /* Smooth transition */
+}
+
+.progress-info {
+  text-align: center;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #333; /* Darker text for contrast */
+}
