@@ -34,7 +34,7 @@ const handleAccept = async () => {
     event.attendees = event.attendees || [];
     const updatedEvent = {
         ...event,
-        attendees: [...event.attendees, {email: userEmail, cid: userCid, alias: userAlias}]
+        attendees: JSON.stringify([...event.attendees, {email: userEmail, cid: userCid, alias: userAlias}])
     };
 
     try {
@@ -43,7 +43,7 @@ const handleAccept = async () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(updatedEvent)
+            body: updatedEvent
         });
 
         if (!response.ok) {
