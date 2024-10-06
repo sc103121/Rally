@@ -9,7 +9,7 @@ function TitleBox({ event }) {
       <div
         style={{ fontSize: "30px", marginBottom: "2rem", marginTop: "1rem" }}
       >
-        {event.eventName} {/* Use the title prop */}
+        {event.eventName}
       </div>
       {/*Only show progress bar if there is an eventGoal*/}
       {event.eventGoal && (

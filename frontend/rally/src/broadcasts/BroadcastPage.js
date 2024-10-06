@@ -1,116 +1,58 @@
-// import React, { useState, useEffect } from 'react';
-// import './BroadcastPage.css';
-
-// function BroadcastPage() {
-//   const [broadcasts, setBroadcasts] = useState([]);
-//   const [newBroadcast, setNewBroadcast] = useState('');
-//   const [isBroadcastModalOpen, setIsBroadcastModalOpen] = useState(false);
-
-//   const url = "http://localhost:3001";
-
-//   // Fetch broadcasts from the backend
-//   useEffect(() => {
-//     fetch(`${url}/broadcasts/api/broadcasts`)
-//       .then((res) => res.json())
-//       .then((data) => setBroadcasts(data));
-//   }, []);
-
-//   // Handle input change
-//   const handleInputChange = (e) => {
-//     setNewBroadcast(e.target.value);
-//   };
-
-//   // Handle form submit (sending new broadcast)
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!newBroadcast) return;
-
-//     const response = await fetch(`${url}/broadcasts/api/broadcasts`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ message: newBroadcast }),
-//     });
-
-//     if (response.ok) {
-//       const newMessage = await response.json();
-//       setBroadcasts([newMessage, ...broadcasts]); // Add the new message to the top of the list
-//       setNewBroadcast(''); // Clear the input
-//     }
-//   };
-
-//   const handleCloseBroadcastModal = () => {
-//     setIsBroadcastModalOpen(false);
-//   };
-
-//   return (
-//     <div className="broadcast-container">
-//       <div className="broadcast-header">
-//         <h3>Broadcasts</h3>
-//         {/* <button className="close-btn">X</button> */}
-//       </div>
-//       <div className="broadcast-list">
-//         {broadcasts.map((broadcast, index) => (
-//           <div className="broadcast-item" key={index}>
-//             <span className="megaphone-icon">📢</span>
-//             <p>{broadcast.message}</p>
-//           </div>
-//         ))}
-//       </div>
-//       <form className="broadcast-form" onSubmit={handleSubmit}>
-//         <input
-//           type="text"
-//           placeholder="Send a broadcast..."
-//           value={newBroadcast}
-//           onChange={handleInputChange}
-//         />
-//         <button type="submit" className="send-btn">
-//           🚀
-//         </button>
-//       </form>
-//     </div>
-//   );
-// }
-
-// export default BroadcastPage;
-
 import React, { useState, useEffect } from "react";
 
-function BroadcastPage({isCreator}) {
-  const [broadcasts, setBroadcasts] = useState([]);
-  const [newBroadcast, setNewBroadcast] = useState('');
-  const url = "http://localhost:3001";
+function BroadcastPage({ isCreator, event }) {
+  const [broadcasts, setBroadcasts] = useState([]); // Stores list of messages
+  const [newBroadcast, setNewBroadcast] = useState(""); // Stores current message input
+  const url = "http://localhost:3001"; // Backend URL
 
-  // Fetch broadcasts from the backend
+  // Fetch existing broadcasts from the backend when component mounts
   useEffect(() => {
-    fetch(`${url}/broadcasts/api/broadcasts`)
+    fetch(`${url}/events/get_event/${event._id}`)
       .then((res) => res.json())
-      .then((data) => setBroadcasts(data));
-  }, []);
+      .then((data) => {
+        if (data && data.message) {
+          setBroadcasts(data.message); // Set the existing messages to the broadcasts state
+        }
+      })
+      .catch((error) => console.error("Error fetching broadcasts:", error));
+  }, [event._id]);
 
   // Handle input change
   const handleInputChange = (e) => {
-    setNewBroadcast(e.target.value);
+    setNewBroadcast(e.target.value); // Update the state with the new message
   };
 
-  // Handle form submit (sending new broadcast)
+  // Handle form submission (sending new broadcast)
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!newBroadcast) return;
 
-    const response = await fetch(`${url}/broadcasts/api/broadcasts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message: newBroadcast }),
-    });
+    if (!newBroadcast) return; // Don't send if input is empty
 
-    if (response.ok) {
-      const newMessage = await response.json();
-      setBroadcasts([newMessage, ...broadcasts]); // Add the new message to the top of the list
-      setNewBroadcast(''); // Clear the input
+    try {
+      // Add the new broadcast message to the existing list
+      const updatedBroadcasts = [...broadcasts, { message: newBroadcast }];
+      
+      // Update the broadcasts state locally (to show new message immediately)
+      setBroadcasts(updatedBroadcasts);
+      setNewBroadcast(""); // Clear input field after submission
+
+      // Send the updated list of broadcasts back to the backend to update the event
+      const response = await fetch(`${url}/events/update_event/${event._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: updatedBroadcasts }), // Send updated message list
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update event.");
+      }
+
+      console.log("Broadcasts successfully updated!");
+    } catch (error) {
+      console.error("Error updating event:", error);
     }
   };
 
@@ -127,19 +69,20 @@ function BroadcastPage({isCreator}) {
           </div>
         ))}
       </div>
-      {isCreator && (<form className="broadcast-form" onSubmit={handleSubmit} style={styles.broadcastForm}>
-        <input
-          type="text"
-          placeholder="Send a broadcast..."
-          value={newBroadcast}
-          onChange={handleInputChange}
-          style={styles.input}
-        />
-        <button type="submit" className="send-btn" style={styles.sendBtn}>
-          🚀
-        </button>
-      </form>
-    )}
+      {isCreator && (
+        <form className="broadcast-form" onSubmit={handleSubmit} style={styles.broadcastForm}>
+          <input
+            type="text"
+            placeholder="Send a broadcast..."
+            value={newBroadcast}
+            onChange={handleInputChange}
+            style={styles.input}
+          />
+          <button type="submit" className="send-btn" style={styles.sendBtn}>
+            🚀
+          </button>
+        </form>
+      )}
     </div>
   );
 }
