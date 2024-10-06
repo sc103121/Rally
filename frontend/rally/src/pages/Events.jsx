@@ -6,13 +6,36 @@ import AttendeeBox from "../components/AttendeeBox";
 import BroadcastBox from "../components/BroadcastBox";
 import RoundedBox from "../components/Box";
 import ShareButton from "../components/ShareButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InfoBox from "../components/InfoBox";
 import Modal from "../components/Modal";
 import { useParams } from "react-router-dom";
 
-export const Events = ({ event }) => {
+export const Events = () => {
   const { id } = useParams();
+
+  // get single event by id
+  const url = "http://localhost:3001/events/get_event/" + id;
+  const [event, setEvent] = useState([]);
+  // const [groupedevents, segroupedtEvents] = useState([]);
+
+  useEffect(() => {
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data); // Log the data to see what is being returned
+        setEvent(data);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }, [url]);
+
   const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
   const [isAttendeeModalOpen, setIsAttendeeModalOpen] = useState(false);
   const [isBroadcastModalOpen, setIsBroadcastModalOpen] = useState(false);
@@ -50,17 +73,17 @@ export const Events = ({ event }) => {
             : ""
         }`}
       >
-        <TitleBox />
-        <InfoBox onDescriptionClick={handleDescriptionClick} />
-        <AttendeeBox onAttendeeClick={handleAttendeeClick} />
-        <BroadcastBox onBroadcastClick={handleBroadcastClick} />
+        <TitleBox event={event} />
+        <InfoBox onDescriptionClick={handleDescriptionClick} event={event} />
+        <AttendeeBox onAttendeeClick={handleAttendeeClick} event={event} />
+        <BroadcastBox onBroadcastClick={handleBroadcastClick} event={event} />
         <div className="rounded-box-container">
           <RoundedBox>Donate</RoundedBox>
           <ShareButton />
         </div>
       </div>
       {isDescriptionModalOpen && (
-        <Modal onClose={handleCloseDescriptionModal}>
+        <Modal onClose={handleCloseDescriptionModal} event={event}>
           <h2>Full Description</h2>
           <p>
             Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec
@@ -73,7 +96,7 @@ export const Events = ({ event }) => {
         </Modal>
       )}
       {isAttendeeModalOpen && (
-        <Modal onClose={handleCloseAttendeeModal}>
+        <Modal onClose={handleCloseAttendeeModal} event={event}>
           <h2>Attendees</h2>
           <ul>
             <li>Attendee 1</li>
@@ -84,7 +107,7 @@ export const Events = ({ event }) => {
         </Modal>
       )}
       {isBroadcastModalOpen && (
-        <Modal onClose={handleCloseBroadcastModal}>
+        <Modal onClose={handleCloseBroadcastModal} event={event}>
           <h2>Broadcasts</h2>
           <ul>
             <li>Broadcast 1</li>

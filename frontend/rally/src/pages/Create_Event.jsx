@@ -12,7 +12,10 @@ function CreateEventPage() {
         eventLocation: '',
         eventDescription: '',
         eventImage: null,
-        eventPublic: false
+        eventPublic: false,
+        eventGoal: 0,
+        evenRaised: 0,
+        creator: localStorage.getItem('email')
     });
 
     const navigate = useNavigate(); // Initialize useNavigate for redirection
@@ -101,6 +104,13 @@ function CreateEventPage() {
                     <div style={{ marginBottom: '15px' }}>
                         <label htmlFor="eventImage" style={{ display: 'block', marginBottom: '5px' }}>Event Image:</label>
                         <input type="file" id="eventImage" name="eventImage" accept="image/*" style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }} onChange={handleChange} />
+                    </div>
+                    <div style={{ marginBottom: '15px' }}>
+                        <label htmlFor="fundraiserGoal" style={{ display: 'block', marginBottom: '5px' }}>Fundraiser Goal Amount:</label>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <span style={{ marginRight: '5px' }}>$</span>
+                            <input type="number" id="fundraiserGoal" name="eventGoal" required style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }} value={formData.eventGoal} onChange={handleChange} />
+                        </div>
                     </div>
                     <div style={{ marginBottom: '15px' }}>
                         <label htmlFor="eventPublic" style={{ display: 'block', marginBottom: '5px' }}>Event Public:</label>

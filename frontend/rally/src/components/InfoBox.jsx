@@ -3,7 +3,7 @@ import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import "./InfoBox.css"; // Import the CSS file
 
-function InfoBox({ onDescriptionClick }) {
+function InfoBox({ onDescriptionClick, event }) {
   return (
     <div className="layout-wrapper">
       <div className="main-box rounded-box" onClick={onDescriptionClick}>
@@ -19,10 +19,7 @@ function InfoBox({ onDescriptionClick }) {
             // whiteSpace: "nowrap",
           }}
         >
-          Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec
-          nisl nec nisl. Lorum ipsum dolor sit amet, consectetur adipiscing
-          elit. Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet,
-          consectetur adipiscing elit. Nullam nec nisl nec nisl.
+          {event.eventDescription}
         </p>
       </div>
       <div className="column-box">
@@ -39,7 +36,7 @@ function InfoBox({ onDescriptionClick }) {
           >
             <LocationOnOutlinedIcon />{" "}
             <div>
-              Location
+              {event.eventLocation}
               <br />
               <a style={{ color: "gray" }}>Location</a>
             </div>
@@ -66,9 +63,9 @@ function InfoBox({ onDescriptionClick }) {
                 flexDirection: "column",
               }}
             >
-              Date
+              {event.eventDate}
               <br />
-              <a style={{ color: "gray" }}>Time</a>
+              <a style={{ color: "gray" }}>{event.eventTime}</a>
             </div>
           </div>
         </div>
