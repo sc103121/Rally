@@ -2,76 +2,99 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export const events = [
-  {
-    id: 1,
-    title: "Cornell Campus Rally",
-    description:
-      "Join us for a peaceful protest to raise awareness about climate change.",
-    date: "2023-10-15",
-    time: "12:00 PM",
-    location: "Cornell University, Ithaca, NY",
-    goal: 1000,
-    raised: 300,
-    isPrivate: false,
-  },
-  {
-    id: 2,
-    title: "Cornell Sustainability March",
-    description: "March with us to promote sustainable practices on campus.",
-    date: "2023-11-05",
-    time: "2:00 PM",
-    location: "Cornell University, Ithaca, NY",
-    goal: 500,
-    raised: 100,
-    isPrivate: false,
-  },
-  {
-    id: 3,
-    title: "Cornell Diversity and Inclusion Rally",
-    description:
-      "Stand together to support diversity and inclusion within our community.",
-    date: "2023-12-01",
-    time: "1:00 PM",
-    location: "Cornell University, Ithaca, NY",
-    goal: 100,
-    raised: 50,
-    isPrivate: true,
-  },
-  {
-    id: 4,
-    title: "Cornell Mental Health Awareness Walk",
-    description:
-      "Walk to raise awareness about mental health issues and support services.",
-    date: "2024-01-20",
-    time: "11:00 AM",
-    location: "Cornell University, Ithaca, NY",
-    goal: 100,
-    raised: 10,
-    isPrivate: false,
-  },
-];
+// export const events = [
+//   {
+//     id: 1,
+//     title: "Cornell Campus Rally",
+//     description:
+//       "Join us for a peaceful protest to raise awareness about climate change.",
+//     date: "2023-10-15",
+//     time: "12:00 PM",
+//     location: "Cornell University, Ithaca, NY",
+//     goal: 1000,
+//     raised: 300,
+//     isPrivate: false,
+//   },
+//   {
+//     id: 2,
+//     title: "Cornell Sustainability March",
+//     description: "March with us to promote sustainable practices on campus.",
+//     date: "2023-11-05",
+//     time: "2:00 PM",
+//     location: "Cornell University, Ithaca, NY",
+//     goal: 500,
+//     raised: 100,
+//     isPrivate: false,
+//   },
+//   {
+//     id: 3,
+//     title: "Cornell Diversity and Inclusion Rally",
+//     description:
+//       "Stand together to support diversity and inclusion within our community.",
+//     date: "2023-12-01",
+//     time: "1:00 PM",
+//     location: "Cornell University, Ithaca, NY",
+//     goal: 100,
+//     raised: 50,
+//     isPrivate: true,
+//   },
+//   {
+//     id: 4,
+//     title: "Cornell Mental Health Awareness Walk",
+//     description:
+//       "Walk to raise awareness about mental health issues and support services.",
+//     date: "2024-01-20",
+//     time: "11:00 AM",
+//     location: "Cornell University, Ithaca, NY",
+//     goal: 100,
+//     raised: 10,
+//     isPrivate: false,
+//   },
+// ];
 
 export default function Event_thumbnail() {
-  const url = "http://localhost:3001";
- 
+  const url = "http://localhost:3001/events/get_events";
+  const [events, setEvents] = useState([]);
+  const [groupedevents, segroupedtEvents] = useState([]);
 
-  const sortedEvents = events.sort(
-    (a, b) => new Date(a.date) - new Date(b.date)
-  );
 
-  const groupedEvents = sortedEvents.reduce((acc, event) => {
-    const date = event.date;
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(event);
-    return acc;
-  }, {});
+  useEffect(() => {
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        data = data.sort(
+          (a, b) => new Date(a.eventDate) - new Date(b.eventDate)
+        );
+        console.log(data);
+        setEvents(data);
+        segroupedtEvents(data.reduce((acc, event) => {
+          const date = event.eventDate;
+          if (!acc[date]) {
+            acc[date] = [];
+          }
+          acc[date].push(event);
+          return acc;
+        }, {}))
+      })
+      .catch((error) => console.error("Error fetching events:", error));
+  }, []);
+
+//   const sortedEvents = events.sort(
+//     (a, b) => new Date(a.date) - new Date(b.date)
+//   );
+
+  // var groupedEvents = events.reduce((acc, event) => {
+  //   const date = event.date;
+  //   if (!acc[date]) {
+  //     acc[date] = [];
+  //   }
+  //   acc[date].push(event);
+  //   return acc;
+  // }, {});
 
   return (
     <div>
-      {Object.keys(groupedEvents).map((date) => {
+      {Object.keys(groupedevents).map((date) => {
         const formattedDate = new Date(date).toLocaleDateString("en-US", {
           weekday: "long",
           day: "numeric",
@@ -84,7 +107,7 @@ export default function Event_thumbnail() {
               <h3 style={{ margin: "16px 0", color: "#333" }}>
                 {formattedDate}
               </h3>
-              {groupedEvents[date].map((eventDetails, index) => (
+              {groupedevents[date].map((eventDetails, index) => (
                 <Link
                   to={`/event/${eventDetails.id}`}
                   key={eventDetails.id}
@@ -107,14 +130,14 @@ export default function Event_thumbnail() {
                       {eventDetails.title}
                     </h4>
                     <p style={{ margin: "0 0 8px 0", color: "#555" }}>
-                      {eventDetails.description.length > 180
-                        ? `${eventDetails.description.substring(0, 180)}...`
-                        : eventDetails.description}
+                      {eventDetails.eventDescription.length > 180
+                        ? `${eventDetails.eventDescription.substring(0, 180)}...`
+                        : eventDetails.eventDescription}
                     </p>
                     <p style={{ margin: "0", color: "#777" }}>
-                      {eventDetails.location}
+                      {eventDetails.eventLocation}
                     </p>
-                    {eventDetails.isPrivate && (
+                    {eventDetails.eventPublic && (
                       <span
                         style={{
                           position: "absolute",
