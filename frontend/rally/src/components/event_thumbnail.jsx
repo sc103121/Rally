@@ -4,7 +4,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import "./event_thumbnail.css";
 import { useEffect, useState } from "react";
 
-export const events = [
+export const fallbackEvents = [
   {
     id: 1,
     title: "Cornell Campus Rally",
@@ -55,119 +55,189 @@ export const events = [
 ];
 
 export default function Event_thumbnail() {
-  const [showIndexes, setShowIndexes] = useState([]); // Track which items to show
+  const url = "http://localhost:3001/events/get_events";
+  const [events, setEvents] = useState(fallbackEvents);
+  const [groupedEvents, setGroupedEvents] = useState({});
+  const [showIndexes, setShowIndexes] = useState([]);
+  const [isFiltered, setIsFiltered] = useState(false);
 
-  // Use useEffect to stagger animations
+  useEffect(() => {
+    // Fetch dynamic events from API
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        data = data.sort(
+          (a, b) => new Date(a.eventDate) - new Date(b.eventDate)
+        );
+        setEvents(data); // Overwrite fallback events with API data
+        groupEvents(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching events:", error);
+        groupEvents(fallbackEvents); // Use fallback if API fails
+      });
+  }, []);
+
+  // Function to group events by date
+  const groupEvents = (eventList) => {
+    const grouped = eventList.reduce((acc, event) => {
+      const date = event.eventDate || event.date; // Support both API and static event format
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(event);
+      return acc;
+    }, {});
+    setGroupedEvents(grouped);
+  };
+
+  // Toggle filter by user email
+  const handleFilterToggle = () => {
+    const userEmail = localStorage.getItem("email");
+    if (isFiltered) {
+      groupEvents(events); // Show all events
+    } else {
+      const filteredEvents = events.filter(
+        (event) => event.creator === userEmail
+      );
+      groupEvents(filteredEvents); // Show only user-created events
+    }
+    setIsFiltered(!isFiltered);
+  };
+
+  // Staggered animations for event display
   useEffect(() => {
     const timeouts = [];
     events.forEach((_, index) => {
-      // First, show the date
       const dateTimeout = setTimeout(() => {
-        console.log(`Showing date-${index}`); // Debugging
         setShowIndexes((prev) => [...prev, `date-${index}`]);
-      }, index * 600); // Staggered by 600ms per index
-
-      // Then, show the event box after the date
+      }, index * 600);
       const boxTimeout = setTimeout(() => {
-        console.log(`Showing box-${index}`); // Debugging
         setShowIndexes((prev) => [...prev, `box-${index}`]);
-      }, index * 600 + 300); // Box appears 300ms after date
-
+      }, index * 600 + 300);
       timeouts.push(dateTimeout, boxTimeout);
     });
-
-    // Clean up timeouts when the component unmounts
-    return () => {
-      timeouts.forEach(clearTimeout);
-    };
-  }, []);
-
-  const sortedEvents = events.sort(
-    (a, b) => new Date(a.date) - new Date(b.date)
-  );
-
-  const groupedEvents = sortedEvents.reduce((acc, event) => {
-    const date = event.date;
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(event);
-    return acc;
-  }, {});
+    return () => timeouts.forEach(clearTimeout); // Clean up on unmount
+  }, [events]);
 
   return (
     <div
       style={{
-        borderTop: "2px solid",
-        borderTopColor: "rgba(0, 0, 0, 0.1)",
+        width: "100%",
+        minHeight: "100vh",
       }}
     >
-      {Object.keys(groupedEvents).map((date, dateIndex) => {
-        const formattedDate = new Date(date).toLocaleDateString("en-US", {
-          weekday: "long",
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        });
+      <div
+        style={{
+          borderTop: "2px solid",
+          borderTopColor: "rgba(0, 0, 0, 0.1)",
+          // minHeight: "100vh",
+          width: "100%",
+        }}
+      >
+        <button
+          onClick={handleFilterToggle}
+          className={"rounded-box"}
+          style={{
+            padding: "10px 20px",
+            margin: "20px 0",
+            // backgroundColor: "#007BFF",
+            color: "#fff",
+            // border: "none",
+            boxShadow: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease",
+            width: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+          }}
+          // onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+          // onMouseOut={(e) => (e.target.style.backgroundColor = "#007BFF")}
+        >
+          {isFiltered ? "Show All Events" : "Filter My Events"}
+        </button>
 
-        return (
-          <div key={date}>
-            {/* Staggered date */}
-            <div
-              className={`fade-up ${
-                showIndexes.includes(`date-${dateIndex}`) ? "show" : ""
-              }`}
-            >
-              <h3 style={{ margin: "16px 0", color: "#333" }}>
-                {formattedDate}
-              </h3>
-            </div>
+        {Object.keys(groupedEvents).map((date, dateIndex) => {
+          const formattedDate = new Date(date).toLocaleDateString("en-US", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
 
-            {/* Staggered event box */}
-            {groupedEvents[date].map((eventDetails, eventIndex) => (
-              <Link
-                to={`/event/${eventDetails.id}`}
-                key={eventDetails.id}
-                style={{ textDecoration: "none", color: "inherit" }}
+          return (
+            <div key={date}>
+              {/* Staggered date */}
+              <div
+                className={`fade-up ${
+                  showIndexes.includes(`date-${dateIndex}`) ? "show" : ""
+                }`}
               >
-                <div
-                  className={`rounded-box fade-up ${
-                    showIndexes.includes(`box-${dateIndex}`) ? "show" : ""
-                  }`}
+                <h3 style={{ margin: "16px 0", color: "#333" }}>
+                  {formattedDate}
+                </h3>
+              </div>
+
+              {/* Staggered event box */}
+              {groupedEvents[date].map((eventDetails, eventIndex) => (
+                <Link
+                  to={`/event/${eventDetails.id || eventDetails._id}`}
+                  key={eventDetails.id || eventDetails._id}
+                  style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  <h4 style={{ margin: "0 0 8px 0" }}>{eventDetails.title}</h4>
-                  <p
+                  <div
+                    className={`rounded-box fade-up ${
+                      showIndexes.includes(`box-${dateIndex}`) ? "show" : ""
+                    }`}
                     style={{
-                      margin: "0.5rem 0.5rem 0.5rem 0.5rem",
-                      color: "#555",
-                      textAlign: "center",
+                      marginBottom: "0.5rem",
                     }}
+                    // style={{
+                    //   position: "relative",
+                    //   border: "1px solid #ccc",
+                    //   borderRadius: "8px",
+                    //   padding: "16px",
+                    //   margin: "8px 0",
+                    //   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    //   // backgroundColor: "#fff",
+                    //   maxWidth: "400px",
+                    // }}
                   >
-                    {eventDetails.description.length > 180
-                      ? `${eventDetails.description.substring(0, 180)}...`
-                      : eventDetails.description}
-                  </p>
-                  <p style={{ margin: "0", color: "#777" }}>
-                    {eventDetails.location}
-                  </p>
-                  {eventDetails.isPrivate && (
-                    <span
+                    <h4 style={{ margin: "0 0 8px 0" }}>
+                      {eventDetails.title}
+                    </h4>
+                    <p
                       style={{
-                        position: "absolute",
-                        bottom: "8px",
-                        right: "8px",
-                        fontSize: "16px",
+                        margin: "0.5rem 0.5rem 0.5rem 0.5rem",
+                        color: "#555",
+                        textAlign: "center",
                       }}
                     >
-                      <LockOutlinedIcon />
-                    </span>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        );
-      })}
+                      {eventDetails.description ||
+                        eventDetails.eventDescription}
+                    </p>
+                    <p style={{ margin: "0", color: "#777" }}>
+                      {eventDetails.location || eventDetails.eventLocation}
+                    </p>
+                    {(eventDetails.isPrivate || !eventDetails.eventPublic) && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          bottom: "8px",
+                          right: "8px",
+                          fontSize: "16px",
+                        }}
+                      >
+                        <LockOutlinedIcon />
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
