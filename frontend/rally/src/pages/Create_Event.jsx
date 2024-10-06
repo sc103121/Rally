@@ -10,6 +10,16 @@ function CreateEventPage() {
     eventDescription: "",
     eventImage: null,
     eventPublic: false,
+    eventGoal: 0,
+    evenRaised: 0,
+    attendees: JSON.stringify([
+      {
+        email: localStorage.getItem("email"),
+        cid: localStorage.getItem("cid"),
+        alias: localStorage.getItem("alias"),
+      },
+    ]),
+    creator: localStorage.getItem("email"),
   });
 
   const [showIndexes, setShowIndexes] = useState([]); // Track which elements to show
@@ -24,6 +34,7 @@ function CreateEventPage() {
       "eventLocation",
       "eventDescription",
       "eventImage",
+      "eventGoal",
       "eventPublic",
       "submitButton",
     ];
@@ -31,7 +42,7 @@ function CreateEventPage() {
     elements.forEach((element, index) => {
       const timeout = setTimeout(() => {
         setShowIndexes((prev) => [...prev, element]);
-      }, index * 100); // Stagger each element by 400ms
+      }, index * 100); // Stagger each element by 100ms
       timeouts.push(timeout);
     });
 
@@ -73,6 +84,7 @@ function CreateEventPage() {
 
       const result = await response.json();
       console.log("Event created successfully:", result);
+      window.location.href = "/";
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     }
@@ -280,6 +292,38 @@ function CreateEventPage() {
               }}
               onChange={handleChange}
             />
+          </div>
+
+          <div
+            style={{ marginBottom: "15px" }}
+            className={`fade-up ${
+              showIndexes.includes("eventGoal") ? "show" : ""
+            }`}
+          >
+            <label
+              htmlFor="fundraiserGoal"
+              style={{ display: "block", marginBottom: "5px" }}
+            >
+              Fundraiser Goal Amount:
+            </label>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <span style={{ marginRight: "5px" }}>$</span>
+              <input
+                type="number"
+                id="fundraiserGoal"
+                name="eventGoal"
+                required
+                style={{
+                  width: "100%",
+                  padding: "8px",
+                  boxSizing: "border-box",
+                  backgroundColor: "rgba(0, 0, 0, 0.2)",
+                  border: "1px solid rgba(0, 0, 0, 0.3)",
+                }}
+                value={formData.eventGoal}
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
           <div
