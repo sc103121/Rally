@@ -104,3 +104,59 @@ body {
     color: #ffcccb; /* Lighten icon color on hover */
   }
   
+
+/* Modal overlay to cover the entire viewport */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above everything */
+}
+
+/* Add a fade-in and scale-up animation */
+@keyframes modalFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95); /* Slightly smaller at the start */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1); /* Full size when finished */
+  }
+}
+
+/* Modal content that is nearly fullscreen */
+.modal-content {
+  background-color: rgba(255, 255, 255, 0.75);
+  width: 70%;
+  height: 70%;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  overflow-y: auto; /* Allows scrolling if content overflows */
+  animation: modalFadeIn 0.3s ease-in-out; /* Apply the fade-in and scale-up animation */
+}
+
+/* Modal close button (the "X" in the top-right corner) */
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Modal description content */
+.modal-description {
+  padding: 1rem;
+  overflow-y: auto;
+}

@@ -7,12 +7,19 @@ function TitleBox({ event }) {
   return (
     <RoundedBox width="100%">
       <div
-        style={{ fontSize: "30px", marginBottom: "2rem", marginTop: "1rem" }}
+        style={{
+          fontSize: "30px",
+          marginBottom: "2rem",
+          marginTop: "1rem",
+          fontFamily: "Montserrat",
+        }}
       >
-        {event.eventName} {/* Use the title prop */}
+        {event.eventName}
       </div>
-
-      <ProgressBar goal={event.eventGoal} raised={event.eventRaised} />
+      {/*Only show progress bar if there is an eventGoal*/}
+      {event.eventGoal && (
+        <ProgressBar goal={event.eventGoal} raised={event.eventRaised} />
+      )}
     </RoundedBox>
   );
 }

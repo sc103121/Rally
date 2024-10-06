@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./BroadcastBox.css"; // Import the CSS file
 import RoundedBox from "./Box";
 import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
@@ -14,25 +14,40 @@ const Broadcast = ({ broadcast, index }) => {
   );
 };
 
-const BroadcastBox = ({ onBroadcastClick }) => {
-  const broadcasts = [
-    "Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nisl nec nisl.",
-    "Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet, consectetur adipiscing elit.",
-    "consectetur adipiscing elit. Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet,",
-    "Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nisl nec nisl.",
-    "Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet, consectetur adipiscing elit.",
-    "consectetur adipiscing elit. Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet,",
-  ];
+function BroadcastBox({ onBroadcastClick, event }) {
+  const [broadcasts, setBroadcasts] = useState([]);
+  const url = "http://localhost:3001"; // Backend API URL
+
+  useEffect(() => {
+    if (!event || !event._id) {
+      console.error("Invalid event or event ID is missing");
+      return;
+    }
+
+    // Fetch broadcasts from the backend
+    fetch(`${url}/events/get_event/${event._id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.message) {
+          setBroadcasts(data.message); // Set the existing messages to the broadcasts state
+        } else {
+          console.error("No broadcasts found in event data");
+        }
+      })
+      .catch((error) => console.error("Error fetching broadcasts:", error));
+  }, [event]); // Add event as a dependency to trigger useEffect when event changes
+
+  // Display the first 3 broadcasts and add "..." if more exist
   const displayedBroadcasts = broadcasts.slice(0, 3);
   const hasMoreBroadcasts = broadcasts.length > 3;
 
   return (
     <RoundedBox width="100%" margin="1rem 0 0 0" onClick={onBroadcastClick}>
-      Broadcasts
-      <br /> <br />
+      <div>Broadcasts</div>
+      <br />
       <div style={{ width: "90%" }}>
         {displayedBroadcasts.map((broadcast, index) => (
-          <Broadcast broadcast={broadcast} index={index} />
+          <Broadcast key={index} broadcast={broadcast.message} index={index} />
         ))}
       </div>
       {hasMoreBroadcasts && (
@@ -40,6 +55,6 @@ const BroadcastBox = ({ onBroadcastClick }) => {
       )}
     </RoundedBox>
   );
-};
+}
 
 export default BroadcastBox;
