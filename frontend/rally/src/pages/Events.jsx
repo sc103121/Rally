@@ -16,8 +16,8 @@ export const Events = () => {
 
   // get single event by id
   const url = "http://localhost:3001/events/get_event/" + id;
-  const [event, setEvent] = useState(null);
-  const [groupedevents, segroupedtEvents] = useState([]);
+  const [event, setEvent] = useState([]);
+  // const [groupedevents, segroupedtEvents] = useState([]);
 
   useEffect(() => {
     fetch(url)
