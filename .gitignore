@@ -1,1 +1,3 @@
 server/node_modules
+frontend/rally/.env
+frontend/rally/.env.production

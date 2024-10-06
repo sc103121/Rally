@@ -9,6 +9,7 @@ export default function Create_account() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    const url = process.env.REACT_APP_API_URL;
     e.preventDefault();
     if (!email.endsWith("@cornell.edu")) {
       setError("Email must be a Cornell email ending in @cornell.edu");
@@ -18,7 +19,7 @@ export default function Create_account() {
     try {
       // Replace with your account creation logic
       const response = await fetch(
-        "http://localhost:3001/users/create_account",
+        `${url}/users/create_account`,
         {
           method: "POST",
           headers: {

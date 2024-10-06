@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 function BroadcastPage({ isCreator, event }) {
   const [broadcasts, setBroadcasts] = useState([]); // Stores list of messages
   const [newBroadcast, setNewBroadcast] = useState(""); // Stores current message input
-  const url = "http://localhost:3001"; // Backend URL
+  const url = process.env.REACT_APP_API_URL; // Backend URL
 
   // Fetch existing broadcasts from the backend when component mounts
   useEffect(() => {

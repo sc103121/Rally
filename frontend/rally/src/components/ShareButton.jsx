@@ -6,12 +6,17 @@ const ShareButton = ({event}) => {
   // Function to handle the sharing action
   const handleShare = async () => {
     // Check if the Web Share API is supported by the browser
+    const apiURL = process.env.REACT_APP_API_URL;
     if (navigator.share) {
       try {
         await navigator.share({
           title: "Check this out!",
           text: "Here is something I wanted to share with you.",
+<<<<<<< HEAD
           url: `http://localhost:3000/invites/${event._id}`, // Replace with your actual URL
+=======
+          url: `${apiURL}/invites/${code}`, 
+>>>>>>> b0f2370d4dece46e72d043432e24871f02f9e7b5
         });
         console.log("Successfully shared");
       } catch (error) {

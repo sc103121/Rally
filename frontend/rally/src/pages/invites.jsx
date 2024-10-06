@@ -4,9 +4,10 @@ import { useParams } from "react-router-dom";
 
 export default function Invites() {
     const { id } = useParams();
+    const apiURL = process.env.REACT_APP_API_URL;
 
     // get single event by id
-    const url = "http://localhost:3001/events/get_event/" + id;
+    const url = `${apiURL}/events/get_event/` + id;
     const [event, setEvent] = useState([]);
     // const [groupedevents, segroupedtEvents] = useState([]);
   
@@ -39,7 +40,7 @@ const handleAccept = async () => {
     };
     console.log("updatedEvent: ", updatedEvent);
     try {
-        const response = await fetch(`http://localhost:3001/events/update_event/${id}`, {
+        const response = await fetch(`${apiURL}/events/update_event/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

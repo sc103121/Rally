@@ -73,7 +73,9 @@ function CreateEventPage() {
         formDataToSend.append(key, formData[key]);
       }
 
-      const response = await fetch("http://localhost:3001/events/events", {
+      const url = process.env.REACT_APP_API_URL;
+
+      const response = await fetch(`${url}/events/events`, {
         method: "POST",
         body: formDataToSend,
       });

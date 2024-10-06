@@ -16,7 +16,7 @@ const Broadcast = ({ broadcast, index }) => {
 
 function BroadcastBox({ onBroadcastClick, event }) {
   const [broadcasts, setBroadcasts] = useState([]);
-  const url = "http://localhost:3001"; // Backend API URL
+  const url = process.env.REACT_APP_API_URL; // Backend API URL
 
   useEffect(() => {
     if (!event || !event._id) {
