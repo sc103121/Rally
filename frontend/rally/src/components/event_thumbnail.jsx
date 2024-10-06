@@ -115,8 +115,8 @@ export default function Event_thumbnail() {
                 </h3>
                 {groupedevents[date].map((eventDetails, index) => (
                   <Link
-                    to={`/event/${eventDetails.id}`}
-                    key={eventDetails.id}
+                    to={`/event/${eventDetails._id}`}
+                    key={eventDetails._id}
                     style={{ textDecoration: "none", color: "inherit" }} // This preserves the styling
                   >
                     <div
