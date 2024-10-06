@@ -10,14 +10,17 @@ import { useState, useEffect } from "react";
 import InfoBox from "../components/InfoBox";
 import Modal from "../components/Modal";
 import { useParams } from "react-router-dom";
+import BroadcastPage from "../broadcasts/BroadcastPage";
 
 export const Events = () => {
   const { id } = useParams();
+  const userEmail = localStorage.getItem('email');
 
   // get single event by id
   const url = "http://localhost:3001/events/get_event/" + id;
   const [event, setEvent] = useState([]);
   const [attendees, setAttendees] = useState([]);
+  const [creatorEmail, setCreatorEmail] = useState([]);
   // const [groupedevents, segroupedtEvents] = useState([]);
 
   useEffect(() => {
@@ -29,6 +32,7 @@ export const Events = () => {
         return response.json();
       })
       .then((data) => {
+
         console.log(data); // Log the data to see what is being returned
 
         setEvent(data);
@@ -42,6 +46,14 @@ export const Events = () => {
         } else {
           setAttendees(data.attendees || []);
         }
+      
+        console.log("data: ", data); // Log the data to see what is being returned
+        const updatedEvent = {
+          ...data,
+          creatorEmail: data.creator ? data.creator : undefined,  // Set creatorEmail if it exists
+        };
+  
+        setEvent(updatedEvent);  // Update the event state with the modified object
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
@@ -115,14 +127,16 @@ export const Events = () => {
       )}
       {isBroadcastModalOpen && (
         <Modal onClose={handleCloseBroadcastModal} event={event}>
-          <h2>Broadcasts</h2>
+          {/* <h2>Broadcasts</h2>
           <ul>
             <li>Broadcast 1</li>
             <li>Broadcast 2</li>
             <li>Broadcast 3</li>
             <li>Broadcast 4</li>
-          </ul>
+          </ul> */}
+          <BroadcastPage isCreator={userEmail==event.creatorEmail}/>
         </Modal>
+        // <BroadcastBox/>
       )}
     </>
   );
