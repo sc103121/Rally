@@ -38,6 +38,9 @@ export default function Create_account() {
       const data = await response.json();
       localStorage.setItem("token", data.token);
       localStorage.setItem("email", data.email);
+      localStorage.setItem("alias", data.alias);
+      localStorage.setItem("cid", data.cid);
+
       setError(""); // Clear error if validation passes
       navigate("/home"); // Navigate to home page
     } catch (err) {
@@ -52,34 +55,20 @@ export default function Create_account() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        // backgroundColor: "#f5f5f5",
-        background:
-          "linear-gradient(180deg, rgb(255, 233.9, 208.12) 0%, rgb(209.52, 165.22, 163.69) 100%);",
+        backgroundColor: "#f5f5f5",
       }}
     >
       <div
         style={{
-          // backgroundColor: "#fff",
+          backgroundColor: "#fff",
           padding: "2rem",
-          margin: "2rem",
           borderRadius: "8px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           maxWidth: "400px",
           width: "100%",
-          backgroundColor: "rgba(255, 255, 255, 0.7)",
         }}
       >
-        <h2
-          style={{
-            textAlign: "center",
-            color: "#333",
-            fontFamily: "Montserrat",
-            marginBottom: "2rem",
-            marginTop: "0",
-          }}
-        >
-          Create Account
-        </h2>
+        <h2 style={{ textAlign: "center", color: "#333" }}>Create Account</h2>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: "1rem" }}>
             <label
@@ -97,7 +86,7 @@ export default function Create_account() {
               onChange={(e) => setEmail(e.target.value)}
               required
               style={{
-                width: "90%",
+                width: "100%",
                 padding: "0.5rem",
                 borderRadius: "4px",
                 border: "1px solid #ddd",
@@ -120,7 +109,7 @@ export default function Create_account() {
               onChange={(e) => setPassword(e.target.value)}
               required
               style={{
-                width: "90%",
+                width: "100%",
                 padding: "0.5rem",
                 borderRadius: "4px",
                 border: "1px solid #ddd",
@@ -143,11 +132,10 @@ export default function Create_account() {
               onChange={(e) => setAlias(e.target.value)}
               required
               style={{
-                width: "90%",
+                width: "100%",
                 padding: "0.5rem",
                 borderRadius: "4px",
                 border: "1px solid #ddd",
-                marginBottom: "1.5rem",
               }}
             />
           </div>

@@ -197,7 +197,6 @@ function CreateEventPage() {
               type="time"
               id="eventTime"
               name="eventTime"
-              required
               style={{
                 width: "100%",
                 padding: "8px",

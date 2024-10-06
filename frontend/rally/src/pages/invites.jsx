@@ -11,20 +11,21 @@ export default function Invites() {
     // const [groupedevents, segroupedtEvents] = useState([]);
   
     useEffect(() => {
-      fetch(url)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data); // Log the data to see what is being returned
-          setEvent(data);
-        })
-        .catch((error) => {
-          console.error("There was a problem with the fetch operation:", error);
-        });
+        const fetchEvent = async () => {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const data = await response.json();
+                console.log(data); // Log the data to see what is being returned
+                setEvent(data);
+            } catch (error) {
+                console.error("There was a problem with the fetch operation:", error);
+            }
+        };
+
+        fetchEvent();
     }, [url]);
 const handleAccept = async () => {
     const userEmail = localStorage.getItem('email') 
@@ -34,16 +35,16 @@ const handleAccept = async () => {
     event.attendees = event.attendees || [];
     const updatedEvent = {
         ...event,
-        attendees: JSON.stringify([...event.attendees, {email: userEmail, cid: userCid, alias: userAlias}])
+        attendees: [...event.attendees, {email: userEmail, cid: userCid, alias: userAlias}]
     };
-
+    console.log("updatedEvent: ", updatedEvent);
     try {
         const response = await fetch(`http://localhost:3001/events/update_event/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: updatedEvent
+            body: JSON.stringify(updatedEvent)
         });
 
         if (!response.ok) {
