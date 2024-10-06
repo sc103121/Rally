@@ -81,25 +81,21 @@ export const Events = () => {
             : ""
         }`}
       >
-        <TitleBox event={event} />
+        <TitleBox event={id} />
         <InfoBox onDescriptionClick={handleDescriptionClick} event={event} />
         <AttendeeBox onAttendeeClick={handleAttendeeClick} event={event} />
         <BroadcastBox onBroadcastClick={handleBroadcastClick} event={event} />
         <div className="rounded-box-container">
           <RoundedBox>Donate</RoundedBox>
-          <ShareButton />
+          <ShareButton code={event.id}/>
         </div>
       </div>
       {isDescriptionModalOpen && (
         <Modal onClose={handleCloseDescriptionModal} event={event}>
-          <h2>Full Description</h2>
+          <h2>Description</h2>
           <p>
-            Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec
-            nisl nec nisl. Lorum ipsum dolor sit amet, consectetur adipiscing
-            elit. Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet,
-            consectetur adipiscing elit. Nullam nec nisl nec nisl. Lorum ipsum
-            dolor sit amet, consectetur adipiscing elit. Nullam nec nisl nec
-            nisl.
+            {event.description ||
+              "This event does not have a description yet."}
           </p>
         </Modal>
       )}
@@ -107,10 +103,8 @@ export const Events = () => {
         <Modal onClose={handleCloseAttendeeModal} event={event}>
           <h2>Attendees</h2>
           <ul>
-            <li>Attendee 1</li>
-            <li>Attendee 2</li>
-            <li>Attendee 3</li>
-            <li>Attendee 4</li>
+            {event.attendees &&
+              event.attendees.map((attendee) => <li key={attendee}>{attendee}</li>)}
           </ul>
         </Modal>
       )}

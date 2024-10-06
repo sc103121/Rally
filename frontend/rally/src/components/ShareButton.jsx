@@ -2,7 +2,7 @@ import React from "react";
 import RoundedBox from "./Box.jsx";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 
-const ShareButton = () => {
+const ShareButton = ({code}) => {
   // Function to handle the sharing action
   const handleShare = async () => {
     // Check if the Web Share API is supported by the browser
@@ -11,7 +11,7 @@ const ShareButton = () => {
         await navigator.share({
           title: "Check this out!",
           text: "Here is something I wanted to share with you.",
-          url: window.location.href, // The current URL of the page
+          url: `http://localhost:3000/invites/${code}`, 
         });
         console.log("Successfully shared");
       } catch (error) {

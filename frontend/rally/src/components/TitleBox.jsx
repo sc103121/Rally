@@ -11,8 +11,10 @@ function TitleBox({ event }) {
       >
         {event.eventName} {/* Use the title prop */}
       </div>
-
-      <ProgressBar goal={event.eventGoal} raised={event.eventRaised} />
+      {/*Only show progress bar if there is an eventGoal*/}
+      {event.eventGoal && (
+        <ProgressBar goal={event.eventGoal} raised={event.eventRaised} />
+      )}
     </RoundedBox>
   );
 }
