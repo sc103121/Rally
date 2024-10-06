@@ -14,22 +14,30 @@ const Broadcast = ({ broadcast, index }) => {
   );
 };
 
-const BroadcastBox = () => {
+const BroadcastBox = ({ onBroadcastClick }) => {
   const broadcasts = [
     "Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nisl nec nisl.",
     "Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet, consectetur adipiscing elit.",
     "consectetur adipiscing elit. Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet,",
+    "Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec nisl nec nisl.",
+    "Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet, consectetur adipiscing elit.",
+    "consectetur adipiscing elit. Nullam nec nisl nec nisl. Lorum ipsum dolor sit amet,",
   ];
+  const displayedBroadcasts = broadcasts.slice(0, 3);
+  const hasMoreBroadcasts = broadcasts.length > 3;
 
   return (
-    <RoundedBox width="100%" margin="1rem 0 0 0">
+    <RoundedBox width="100%" margin="1rem 0 0 0" onClick={onBroadcastClick}>
       Broadcasts
       <br /> <br />
       <div style={{ width: "90%" }}>
-        {broadcasts.map((broadcast, index) => (
+        {displayedBroadcasts.map((broadcast, index) => (
           <Broadcast broadcast={broadcast} index={index} />
         ))}
       </div>
+      {hasMoreBroadcasts && (
+        <div style={{ textAlign: "center", marginTop: "10px" }}>...</div>
+      )}
     </RoundedBox>
   );
 };
