@@ -17,7 +17,9 @@ export default function Log_In() {
 
         try {
             // Send the login request to your backend API
-            const response = await fetch('http://localhost:3001/users/login', {
+            const url = process.env.REACT_APP_API_URL;
+
+            const response = await fetch(`${url}/users/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

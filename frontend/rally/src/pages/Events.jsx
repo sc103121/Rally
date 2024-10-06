@@ -17,7 +17,9 @@ export const Events = () => {
   const userEmail = localStorage.getItem('email');
 
   // get single event by id
-  const url = "http://localhost:3001/events/get_event/" + id;
+  const apiURL = process.env.REACT_APP_API_URL;
+  const url = `${apiURL}/events/get_event/` + id;
+  console.log(url);
   const [event, setEvent] = useState([]);
   const [attendees, setAttendees] = useState([]);
   const [creatorEmail, setCreatorEmail] = useState([]);
