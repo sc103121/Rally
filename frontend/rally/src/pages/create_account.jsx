@@ -1,46 +1,49 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Create_account() {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [alias, setAlias] = React.useState('');
-    const [error, setError] = React.useState('');
-    const navigate = useNavigate();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [alias, setAlias] = React.useState("");
+  const [error, setError] = React.useState("");
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!email.endsWith('@cornell.edu')) {
-            setError('Email must be a Cornell email ending in @cornell.edu');
-            return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email.endsWith("@cornell.edu")) {
+      setError("Email must be a Cornell email ending in @cornell.edu");
+      return;
+    }
+
+    try {
+      // Replace with your account creation logic
+      const response = await fetch(
+        "http://localhost:3001/users/create_account",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password, alias }),
         }
+      );
 
-        try {
-            // Replace with your account creation logic
-            const response = await fetch('http://localhost:3001/users/create_account', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password, alias }),
-            });
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(errorData.error);
+        console.log(errorData);
+        throw new Error("Account creation failed");
+      }
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                alert(errorData.error);
-                console.log(errorData)
-                throw new Error('Account creation failed');
-            }
-
-            const data = await response.json();
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('email', data.email);
-            setError(''); // Clear error if validation passes
-            navigate('/home'); // Navigate to home page
-        } catch (err) {
-            setError(err.message);
-        }
-    };
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("email", data.email);
+      setError(""); // Clear error if validation passes
+      navigate("/home"); // Navigate to home page
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <div
@@ -49,20 +52,34 @@ export default function Create_account() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        backgroundColor: "#f5f5f5",
+        // backgroundColor: "#f5f5f5",
+        background:
+          "linear-gradient(180deg, rgb(255, 233.9, 208.12) 0%, rgb(209.52, 165.22, 163.69) 100%);",
       }}
     >
       <div
         style={{
-          backgroundColor: "#fff",
+          // backgroundColor: "#fff",
           padding: "2rem",
+          margin: "2rem",
           borderRadius: "8px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           maxWidth: "400px",
           width: "100%",
+          backgroundColor: "rgba(255, 255, 255, 0.7)",
         }}
       >
-        <h2 style={{ textAlign: "center", color: "#333" }}>Create Account</h2>
+        <h2
+          style={{
+            textAlign: "center",
+            color: "#333",
+            fontFamily: "Montserrat",
+            marginBottom: "2rem",
+            marginTop: "0",
+          }}
+        >
+          Create Account
+        </h2>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: "1rem" }}>
             <label
@@ -80,7 +97,7 @@ export default function Create_account() {
               onChange={(e) => setEmail(e.target.value)}
               required
               style={{
-                width: "100%",
+                width: "90%",
                 padding: "0.5rem",
                 borderRadius: "4px",
                 border: "1px solid #ddd",
@@ -103,7 +120,7 @@ export default function Create_account() {
               onChange={(e) => setPassword(e.target.value)}
               required
               style={{
-                width: "100%",
+                width: "90%",
                 padding: "0.5rem",
                 borderRadius: "4px",
                 border: "1px solid #ddd",
@@ -126,10 +143,11 @@ export default function Create_account() {
               onChange={(e) => setAlias(e.target.value)}
               required
               style={{
-                width: "100%",
+                width: "90%",
                 padding: "0.5rem",
                 borderRadius: "4px",
                 border: "1px solid #ddd",
+                marginBottom: "1.5rem",
               }}
             />
           </div>
