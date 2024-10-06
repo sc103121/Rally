@@ -10,6 +10,7 @@ import CreateEventPage from './pages/Create_Event.jsx';
 import Create_account from './pages/create_account.jsx';
 import BroadcastPage from './broadcasts/BroadcastPage.js';
 import { useEffect, useState } from 'react';
+import Log_In from './pages/Log_In';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,7 +24,8 @@ function App() {
     return (
       <Router>
         <Routes>
-          <Route path="/" element={isLoggedIn ? <Home /> : <Create_account />} />
+          <Route path="/" element={isLoggedIn ? <Home /> : <Log_In />} />
+          <Route path="/signup" element={<Create_account />} />
           <Route path="/home" element={<Home />} />
           <Route path="/event/:id" element={<Events />} />
           <Route path="/profile" element={<ProfilePage />} />
