@@ -55,7 +55,8 @@ export const fallbackEvents = [
 ];
 
 export default function Event_thumbnail() {
-  const url = "http://localhost:3001/events/get_events";
+  const apiURL = process.env.REACT_APP_API_URL;
+  const url = `${apiURL}/events/get_events`;
   const [events, setEvents] = useState(fallbackEvents);
   const [groupedEvents, setGroupedEvents] = useState({});
   const [showIndexes, setShowIndexes] = useState([]);
