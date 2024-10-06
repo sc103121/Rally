@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b) !important;
+  background-attachment: fixed;
+}
