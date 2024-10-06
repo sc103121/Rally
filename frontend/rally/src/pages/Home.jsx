@@ -32,7 +32,7 @@ function Home() {
       >
         <p
           style={{
-            fontFamily: "Montserrat",
+            fontFamily: "'Montserrat', Arial, sans-serif",
             fontSize: "2rem",
             fontWeight: "bold",
             justifyContent: "left",
