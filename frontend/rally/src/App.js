@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Events from './pages/Events';
 import ProfilePage from './profile/ProfilePage.jsx';
 import CreateEventPage from './pages/Create_Event.jsx';
+import EventResult from './pages/EventResult.jsx';
 import Create_account from './pages/create_account.jsx';
 import BroadcastPage from './broadcasts/BroadcastPage.js';
 import { useEffect, useState } from 'react';
@@ -30,6 +31,7 @@ function App() {
           <Route path="/event/:id" element={<Events />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/create-event" element={<CreateEventPage />} />
+          <Route path="/results" element={<EventResult />} />
           <Route path="/broadcast" element={<BroadcastPage />} />
         </Routes>
       </Router>
