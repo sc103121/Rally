@@ -36,6 +36,8 @@ export default function Log_In() {
             // Store the JWT token and email in localStorage
             localStorage.setItem('token', data.token);
             localStorage.setItem('email', data.email);
+            localStorage.setItem('alias', data.alias);
+            localStorage.setItem('cid', data.cid);
             // console.log(data.token);
             // console.log(data.email);
 

@@ -11,6 +11,7 @@ function CreateEventPage() {
         eventPublic: false,
         eventGoal: 0,
         evenRaised: 0,
+        attendees: [],
         creator: localStorage.getItem('email')
     });
 
