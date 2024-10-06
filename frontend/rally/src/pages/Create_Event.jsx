@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
-import "../components/Box.css"; // Ensure your styles are imported
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { pinata } from "../utils/config"; // Make sure this is correct if you're using Pinata SDK
+
 
 function CreateEventPage() {
-  const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
     eventName: "",
     eventDate: "",
     eventTime: "",
@@ -21,9 +24,19 @@ function CreateEventPage() {
     ]),
     creator: localStorage.getItem("email"),
   });
-
+  
   const [showIndexes, setShowIndexes] = useState([]); // Track which elements to show
 
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        const { name, value, type, checked, files } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
+        }));
+    };
+  
   // Stagger the appearance of form elements
   useEffect(() => {
     const timeouts = [];
@@ -51,37 +64,71 @@ function CreateEventPage() {
     };
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]:
-        type === "checkbox" ? checked : type === "file" ? files[0] : value,
-    }));
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        try {
+            
+            let ImageCID = '';  // CID of the uploaded image
+        
+            // 1. Upload the image to Pinata (if any)
+            if (formData.eventImage) {
+                console.log("Uploading image to Pinata...");
+                const upload = await pinata.upload.file(formData.eventImage);
+                
+                //console.log("upload:", upload)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Print the entire form except the image
-    const { eventImage, ...formWithoutImage } = formData;
-    console.log("Form data without image:", formWithoutImage);
-
-    try {
-      const formDataToSend = new FormData();
-      for (const key in formData) {
-        formDataToSend.append(key, formData[key]);
-      }
-
-      const response = await fetch("http://localhost:3001/events/events", {
-        method: "POST",
-        body: formDataToSend,
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
+                ImageCID = upload.cid;  // Store the CID separately
+                console.log("Image uploaded successfully. CID:", ImageCID);
+            }
+    
+            // 2. Prepare the form data with the Pinata URL and CID
+            const formDataToSend = {
+                ...formData,
+                imageCID: ImageCID     // CID of the uploaded image
+            };
+    
+            // 3. Submit the event data to your backend
+            console.log("Submitting form data to the backend with image CID:", formDataToSend);
+            const response = await fetch('http://localhost:3001/events/events', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formDataToSend),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Form submission failed');
+            }
+    
+            // const result = await response.json();
+            
+        
+            // 4. Get predictions based on the form data (this remains the same)
+            const predictionResponse = await axios.post('http://127.0.0.1:5001/predict', {
+                event_name: formData.eventName,
+                event_description: formData.eventDescription,
+            });
+    
+            const predictedCategory = predictionResponse.data.predicted_category;
+            const recommendations = predictionResponse.data.recommendations;
+    
+            // 5. Navigate to the result page
+            navigate('/results', {
+                state: {
+                    predictedCategory,
+                    recommendations,
+                    eventName: formData.eventName,
+                    eventDescription: formData.eventDescription,
+                },
+            });
+            
+        } catch (error) {
+            console.error('There was a problem with the submission:', error);
+            alert('An error occurred during submission. Please check the console for more details.');
+        }
+    };
       const result = await response.json();
       console.log("Event created successfully:", result);
       window.location.href = "/";
