@@ -204,7 +204,7 @@ export default function Event_thumbnail() {
                     // }}
                   >
                     <h4 style={{ margin: "0 0 8px 0" }}>
-                      {eventDetails.title}
+                      {eventDetails.eventName}
                     </h4>
                     <p
                       style={{
