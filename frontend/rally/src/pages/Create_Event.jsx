@@ -11,7 +11,7 @@ function CreateEventPage() {
         eventPublic: false,
         eventGoal: 0,
         evenRaised: 0,
-        attendees: [],
+        attendees: [{email: localStorage.getItem('email'), cid: localStorage.getItem('cid'), alias: localStorage.getItem('alias')}],
         creator: localStorage.getItem('email')
     });
 

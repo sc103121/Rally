@@ -30,19 +30,6 @@ export default function Event_thumbnail() {
       .catch((error) => console.error("Error fetching events:", error));
   }, []);
 
-  //   const sortedEvents = events.sort(
-  //     (a, b) => new Date(a.date) - new Date(b.date)
-  //   );
-
-  // var groupedEvents = events.reduce((acc, event) => {
-  //   const date = event.date;
-  //   if (!acc[date]) {
-  //     acc[date] = [];
-  //   }
-  //   acc[date].push(event);
-  //   return acc;
-  // }, {});
-
   const [isFiltered, setIsFiltered] = useState(false);
 
   const handleFilterToggle = () => {
