@@ -4,63 +4,63 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import "./event_thumbnail.css";
 import { useEffect, useState } from "react";
 
-export const fallbackEvents = [
-  {
-    id: 1,
-    title: "Cornell Campus Rally",
-    description:
-      "Join us for a peaceful protest to raise awareness about climate change.",
-    date: "2023-10-15",
-    time: "12:00 PM",
-    location: "Cornell University, Ithaca, NY",
-    goal: 1000,
-    raised: 300,
-    isPrivate: false,
-  },
-  {
-    id: 2,
-    title: "Cornell Sustainability March",
-    description: "March with us to promote sustainable practices on campus.",
-    date: "2023-11-05",
-    time: "2:00 PM",
-    location: "Cornell University, Ithaca, NY",
-    goal: 500,
-    raised: 100,
-    isPrivate: false,
-  },
-  {
-    id: 3,
-    title: "Cornell Diversity and Inclusion Rally",
-    description:
-      "Stand together to support diversity and inclusion within our community.",
-    date: "2023-12-01",
-    time: "1:00 PM",
-    location: "Cornell University, Ithaca, NY",
-    goal: 100,
-    raised: 50,
-    isPrivate: true,
-  },
-  {
-    id: 4,
-    title: "Cornell Mental Health Awareness Walk",
-    description:
-      "Walk to raise awareness about mental health issues and support services.",
-    date: "2024-01-20",
-    time: "11:00 AM",
-    location: "Cornell University, Ithaca, NY",
-    goal: 100,
-    raised: 10,
-    isPrivate: false,
-  },
-];
+// export const fallbackEvents = [
+//   {
+//     id: 1,
+//     title: "Cornell Campus Rally",
+//     description:
+//       "Join us for a peaceful protest to raise awareness about climate change.",
+//     date: "2023-10-15",
+//     time: "12:00 PM",
+//     location: "Cornell University, Ithaca, NY",
+//     goal: 1000,
+//     raised: 300,
+//     isPrivate: false,
+//   },
+//   {
+//     id: 2,
+//     title: "Cornell Sustainability March",
+//     description: "March with us to promote sustainable practices on campus.",
+//     date: "2023-11-05",
+//     time: "2:00 PM",
+//     location: "Cornell University, Ithaca, NY",
+//     goal: 500,
+//     raised: 100,
+//     isPrivate: false,
+//   },
+//   {
+//     id: 3,
+//     title: "Cornell Diversity and Inclusion Rally",
+//     description:
+//       "Stand together to support diversity and inclusion within our community.",
+//     date: "2023-12-01",
+//     time: "1:00 PM",
+//     location: "Cornell University, Ithaca, NY",
+//     goal: 100,
+//     raised: 50,
+//     isPrivate: true,
+//   },
+//   {
+//     id: 4,
+//     title: "Cornell Mental Health Awareness Walk",
+//     description:
+//       "Walk to raise awareness about mental health issues and support services.",
+//     date: "2024-01-20",
+//     time: "11:00 AM",
+//     location: "Cornell University, Ithaca, NY",
+//     goal: 100,
+//     raised: 10,
+//     isPrivate: false,
+//   },
+// ];
 
 export default function Event_thumbnail() {
-  const apiURL = process.env.REACT_APP_API_URL;
-  const url = `${apiURL}/events/get_events`;
-  const [events, setEvents] = useState(fallbackEvents);
+  const url = "http://localhost:3001/events/get_events";
+  const [events, setEvents] = useState([]);
   const [groupedEvents, setGroupedEvents] = useState({});
   const [showIndexes, setShowIndexes] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
+  console.log("events: ", events);
 
   useEffect(() => {
     // Fetch dynamic events from API
@@ -75,7 +75,7 @@ export default function Event_thumbnail() {
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
-        groupEvents(fallbackEvents); // Use fallback if API fails
+        // groupEvents(fallbackEvents); // Use fallback if API fails
       });
   }, []);
 
