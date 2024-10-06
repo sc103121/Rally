@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { pinata } from "../utils/config"; // Make sure this is correct if you're using Pinata SDK
+
 
 function CreateEventPage() {
     const [formData, setFormData] = useState({
@@ -9,7 +11,7 @@ function CreateEventPage() {
         eventTime: '',
         eventLocation: '',
         eventDescription: '',
-        eventImage: null,
+        eventImage: null, // Event image file is stored here
         eventPublic: false,
         eventGoal: 0,
         evenRaised: 0,
@@ -25,50 +27,74 @@ function CreateEventPage() {
             [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
         }));
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        // Print the entire form except the image
-        const { eventImage, ...formWithoutImage } = formData;
-        console.log('Form data without image:', formWithoutImage);
-
+    
         try {
-            const formDataToSend = new FormData();
-            for (const key in formData) {
-                formDataToSend.append(key, formData[key]);
-            }
+            
+            let ImageCID = '';  // CID of the uploaded image
+        
+            // 1. Upload the image to Pinata (if any)
+            if (formData.eventImage) {
+                console.log("Uploading image to Pinata...");
+                const upload = await pinata.upload.file(formData.eventImage);
+                
+                //console.log("upload:", upload)
 
+                ImageCID = upload.cid;  // Store the CID separately
+                console.log("Image uploaded successfully. CID:", ImageCID);
+            }
+    
+            // 2. Prepare the form data with the Pinata URL and CID
+            const formDataToSend = {
+                ...formData,
+                imageCID: ImageCID     // CID of the uploaded image
+            };
+    
+            // 3. Submit the event data to your backend
+            console.log("Submitting form data to the backend with image CID:", formDataToSend);
             const response = await fetch('http://localhost:3001/events/events', {
                 method: 'POST',
-                body: formDataToSend
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formDataToSend),
             });
-
-            const result = await response.json();
-            console.log('Event created successfully:', result);
     
+            if (!response.ok) {
+                throw new Error('Form submission failed');
+            }
+    
+            // const result = await response.json();
+            
+        
+            // 4. Get predictions based on the form data (this remains the same)
             const predictionResponse = await axios.post('http://127.0.0.1:5001/predict', {
                 event_name: formData.eventName,
-                event_description: formData.eventDescription
+                event_description: formData.eventDescription,
             });
-            // Extract prediction data from response
+    
             const predictedCategory = predictionResponse.data.predicted_category;
             const recommendations = predictionResponse.data.recommendations;
-            const { eventName, eventDescription } = formData;  // Grab the event name and description from formData
-            
-            // Redirect to the results page and pass the event details via state
+    
+            // 5. Navigate to the result page
             navigate('/results', {
                 state: {
                     predictedCategory,
                     recommendations,
-                    eventName,  // Passing the event name to the result page
-                    eventDescription  // Passing the event description to the result page
-                }
+                    eventName: formData.eventName,
+                    eventDescription: formData.eventDescription,
+                },
             });
-    
+            
         } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
+            console.error('There was a problem with the submission:', error);
+            alert('An error occurred during submission. Please check the console for more details.');
         }
     };
+    
+    
 
 
     return (
