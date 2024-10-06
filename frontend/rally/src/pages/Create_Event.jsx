@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import axios from 'axios';
+
+
 
 function CreateEventPage() {
     const [formData, setFormData] = useState({
@@ -14,6 +18,8 @@ function CreateEventPage() {
         creator: localStorage.getItem('email')
     });
 
+    const navigate = useNavigate(); // Initialize useNavigate for redirection
+
     const handleChange = (e) => {
         const { name, value, type, checked, files } = e.target;
         setFormData(prevState => ({
@@ -21,35 +27,54 @@ function CreateEventPage() {
             [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
         }));
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        // Print the entire form except the image
-        const { eventImage, ...formWithoutImage } = formData;
-        console.log('Form data without image:', formWithoutImage);
-
+    
         try {
             const formDataToSend = new FormData();
             for (const key in formData) {
                 formDataToSend.append(key, formData[key]);
             }
-
+    
             const response = await fetch('http://localhost:3001/events/events', {
                 method: 'POST',
                 body: formDataToSend
             });
-
+    
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
+    
             const result = await response.json();
             console.log('Event created successfully:', result);
-            window.location.href = '/';
+    
+            const predictionResponse = await axios.post('http://127.0.0.1:5001/predict', {
+                event_name: formData.eventName,
+                event_description: formData.eventDescription
+            });
+
+            // Extract prediction data from response
+            const predictedCategory = predictionResponse.data.predicted_category;
+            const recommendations = predictionResponse.data.recommendations;
+
+            const { eventName, eventDescription } = formData;  // Grab the event name and description from formData
+            
+            // Redirect to the results page and pass the event details via state
+            navigate('/results', {
+                state: {
+                    predictedCategory,
+                    recommendations,
+                    eventName,  // Passing the event name to the result page
+                    eventDescription  // Passing the event description to the result page
+                }
+            });
+    
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
         }
     };
+    
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f0f2f5' }}>

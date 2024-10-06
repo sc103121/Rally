@@ -73,17 +73,17 @@ export const Events = () => {
             : ""
         }`}
       >
-        <TitleBox event={event} />
-        <InfoBox onDescriptionClick={handleDescriptionClick} event={event} />
-        <AttendeeBox onAttendeeClick={handleAttendeeClick} event={event} />
-        <BroadcastBox onBroadcastClick={handleBroadcastClick} event={event} />
+        <TitleBox />
+        <InfoBox onDescriptionClick={handleDescriptionClick} />
+        <AttendeeBox onAttendeeClick={handleAttendeeClick} />
+        <BroadcastBox onBroadcastClick={handleBroadcastClick} />
         <div className="rounded-box-container">
           <RoundedBox>Donate</RoundedBox>
           <ShareButton />
         </div>
       </div>
       {isDescriptionModalOpen && (
-        <Modal onClose={handleCloseDescriptionModal} event={event}>
+        <Modal onClose={handleCloseDescriptionModal}>
           <h2>Full Description</h2>
           <p>
             Lorum ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec
@@ -96,7 +96,7 @@ export const Events = () => {
         </Modal>
       )}
       {isAttendeeModalOpen && (
-        <Modal onClose={handleCloseAttendeeModal} event={event}>
+        <Modal onClose={handleCloseAttendeeModal}>
           <h2>Attendees</h2>
           <ul>
             <li>Attendee 1</li>
@@ -107,7 +107,7 @@ export const Events = () => {
         </Modal>
       )}
       {isBroadcastModalOpen && (
-        <Modal onClose={handleCloseBroadcastModal} event={event}>
+        <Modal onClose={handleCloseBroadcastModal}>
           <h2>Broadcasts</h2>
           <ul>
             <li>Broadcast 1</li>
