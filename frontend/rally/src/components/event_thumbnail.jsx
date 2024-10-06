@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import "./event_thumbnail.css";
+import { useEffect, useState } from "react";
 
 export const events = [
   {
@@ -53,6 +55,33 @@ export const events = [
 ];
 
 export default function Event_thumbnail() {
+  const [showIndexes, setShowIndexes] = useState([]); // Track which items to show
+
+  // Use useEffect to stagger animations
+  useEffect(() => {
+    const timeouts = [];
+    events.forEach((_, index) => {
+      // First, show the date
+      const dateTimeout = setTimeout(() => {
+        console.log(`Showing date-${index}`); // Debugging
+        setShowIndexes((prev) => [...prev, `date-${index}`]);
+      }, index * 600); // Staggered by 600ms per index
+
+      // Then, show the event box after the date
+      const boxTimeout = setTimeout(() => {
+        console.log(`Showing box-${index}`); // Debugging
+        setShowIndexes((prev) => [...prev, `box-${index}`]);
+      }, index * 600 + 300); // Box appears 300ms after date
+
+      timeouts.push(dateTimeout, boxTimeout);
+    });
+
+    // Clean up timeouts when the component unmounts
+    return () => {
+      timeouts.forEach(clearTimeout);
+    };
+  }, []);
+
   const sortedEvents = events.sort(
     (a, b) => new Date(a.date) - new Date(b.date)
   );
@@ -73,59 +102,69 @@ export default function Event_thumbnail() {
         borderTopColor: "rgba(0, 0, 0, 0.1)",
       }}
     >
-      {Object.keys(groupedEvents).map((date) => {
+      {Object.keys(groupedEvents).map((date, dateIndex) => {
         const formattedDate = new Date(date).toLocaleDateString("en-US", {
           weekday: "long",
           day: "numeric",
           month: "long",
           year: "numeric",
         });
+
         return (
           <div key={date}>
-            <div>
+            {/* Staggered date */}
+            <div
+              className={`fade-up ${
+                showIndexes.includes(`date-${dateIndex}`) ? "show" : ""
+              }`}
+            >
               <h3 style={{ margin: "16px 0", color: "#333" }}>
                 {formattedDate}
               </h3>
-              {groupedEvents[date].map((eventDetails, index) => (
-                <Link
-                  to={`/event/${eventDetails.id}`}
-                  key={eventDetails.id}
-                  style={{ textDecoration: "none", color: "inherit" }} // This preserves the styling
+            </div>
+
+            {/* Staggered event box */}
+            {groupedEvents[date].map((eventDetails, eventIndex) => (
+              <Link
+                to={`/event/${eventDetails.id}`}
+                key={eventDetails.id}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <div
+                  className={`rounded-box fade-up ${
+                    showIndexes.includes(`box-${dateIndex}`) ? "show" : ""
+                  }`}
                 >
-                  <div key={index} className="rounded-box">
-                    <h4 style={{ margin: "0 0 8px 0" }}>
-                      {eventDetails.title}
-                    </h4>
-                    <p
+                  <h4 style={{ margin: "0 0 8px 0" }}>{eventDetails.title}</h4>
+                  <p
+                    style={{
+                      margin: "0.5rem 0.5rem 0.5rem 0.5rem",
+                      color: "#555",
+                      textAlign: "center",
+                    }}
+                  >
+                    {eventDetails.description.length > 180
+                      ? `${eventDetails.description.substring(0, 180)}...`
+                      : eventDetails.description}
+                  </p>
+                  <p style={{ margin: "0", color: "#777" }}>
+                    {eventDetails.location}
+                  </p>
+                  {eventDetails.isPrivate && (
+                    <span
                       style={{
-                        margin: "0.5rem 0.5rem 0.5rem 0.5rem",
-                        color: "#555",
-                        textAlign: "center",
+                        position: "absolute",
+                        bottom: "8px",
+                        right: "8px",
+                        fontSize: "16px",
                       }}
                     >
-                      {eventDetails.description.length > 180
-                        ? `${eventDetails.description.substring(0, 180)}...`
-                        : eventDetails.description}
-                    </p>
-                    <p style={{ margin: "0", color: "#777" }}>
-                      {eventDetails.location}
-                    </p>
-                    {eventDetails.isPrivate && (
-                      <span
-                        style={{
-                          position: "absolute",
-                          bottom: "8px",
-                          right: "8px",
-                          fontSize: "16px",
-                        }}
-                      >
-                        <LockOutlinedIcon />
-                      </span>
-                    )}
-                  </div>
-                </Link>
-              ))}
-            </div>
+                      <LockOutlinedIcon />
+                    </span>
+                  )}
+                </div>
+              </Link>
+            ))}
           </div>
         );
       })}
