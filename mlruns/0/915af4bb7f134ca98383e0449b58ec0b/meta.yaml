@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/arnav/Documents/Cornell/Misc/Big%20Red%20Hacks/Rally/mlruns/0/915af4bb7f134ca98383e0449b58ec0b/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 915af4bb7f134ca98383e0449b58ec0b
+run_name: delicate-hare-50
+run_uuid: 915af4bb7f134ca98383e0449b58ec0b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728199903477
+status: 1
+tags: []
+user_id: arnav

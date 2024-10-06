@@ -31,11 +31,14 @@ model = BertModel.from_pretrained('bert-base-uncased')
 
 # Function to convert text into BERT embeddings and ensure it's 2D
 def get_bert_embedding(text):
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=512)
+    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=64)
     with torch.no_grad():
         outputs = model(**inputs)
-    # Take the pooled output, which represents the [CLS] token's embedding and reshape to 2D
-    return outputs.pooler_output.numpy()
+    # model = model.to('cpu')
+    # Use pooled_output to get [CLS] token embedding
+    embedding = outputs.pooler_output.detach().cpu().numpy()
+    return embedding
+
 
 # Create BERT embeddings for the dataset
 data['bert_embedding'] = data['text'].apply(lambda x: get_bert_embedding(x)[0])

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/arnav/Documents/Cornell/Misc/Big%20Red%20Hacks/Rally/mlruns/0/2268e2ce08364a71964138cc886eae74/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 2268e2ce08364a71964138cc886eae74
+run_name: powerful-calf-614
+run_uuid: 2268e2ce08364a71964138cc886eae74
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728200405040
+status: 1
+tags: []
+user_id: arnav
