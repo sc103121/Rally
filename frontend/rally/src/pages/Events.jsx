@@ -35,6 +35,7 @@ export const Events = () => {
         const updatedEvent = {
           ...data,
           creatorEmail: data.creator ? data.creator : undefined,  // Set creatorEmail if it exists
+          msgs : data.msgs ? data.msgs : []
         };
   
         setEvent(updatedEvent);  // Update the event state with the modified object
@@ -81,7 +82,7 @@ export const Events = () => {
             : ""
         }`}
       >
-        <TitleBox event={id} />
+        <TitleBox event={event} />
         <InfoBox onDescriptionClick={handleDescriptionClick} event={event} />
         <AttendeeBox onAttendeeClick={handleAttendeeClick} event={event} />
         <BroadcastBox onBroadcastClick={handleBroadcastClick} event={event} />
@@ -117,7 +118,7 @@ export const Events = () => {
             <li>Broadcast 3</li>
             <li>Broadcast 4</li>
           </ul> */}
-          <BroadcastPage isCreator={userEmail==event.creatorEmail}/>
+          <BroadcastPage isCreator={userEmail==event.creatorEmail} event={event}/>
         </Modal>
         // <BroadcastBox/>
       )}
