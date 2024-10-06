@@ -1,3 +1,4 @@
+
 import logo from './logo.svg';
 import './App.css';
 import background, { Background } from './main/main.jsx';
@@ -7,20 +8,18 @@ import Home from './pages/Home';
 import Events from './pages/Events';
 import ProfilePage from './profile/ProfilePage.jsx';
 import CreateEventPage from './pages/Create_Event.jsx';
+import EventResult from './pages/EventResult.jsx';
 import Create_account from './pages/create_account.jsx';
 import BroadcastPage from './broadcasts/BroadcastPage.js';
 import { useEffect, useState } from 'react';
 import Log_In from './pages/Log_In';
-
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
     useEffect(() => {
       // Replace this with your actual login check logic
       const userLoggedIn = localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null;
       setIsLoggedIn(userLoggedIn);
     }, []);
-
     return (
       <Router>
         <Routes>
@@ -30,10 +29,10 @@ function App() {
           <Route path="/event/:id" element={<Events />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/create-event" element={<CreateEventPage />} />
+          <Route path="/results" element={<EventResult />} />
           <Route path="/broadcast" element={<BroadcastPage />} />
         </Routes>
       </Router>
     );
 }
-
 export default App;
