@@ -17,6 +17,7 @@ export const Events = () => {
   // get single event by id
   const url = "http://localhost:3001/events/get_event/" + id;
   const [event, setEvent] = useState([]);
+  const [attendees, setAttendees] = useState([]);
   // const [groupedevents, segroupedtEvents] = useState([]);
 
   useEffect(() => {
@@ -29,7 +30,18 @@ export const Events = () => {
       })
       .then((data) => {
         console.log(data); // Log the data to see what is being returned
+
         setEvent(data);
+        if (typeof data.attendees === "string") {
+          try {
+            const parsedAttendees = JSON.parse(data.attendees);
+            setAttendees(parsedAttendees);
+          } catch (error) {
+            console.error("Error parsing attendees JSON string:", error);
+          }
+        } else {
+          setAttendees(data.attendees || []);
+        }
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
@@ -75,19 +87,18 @@ export const Events = () => {
       >
         <TitleBox event={id} />
         <InfoBox onDescriptionClick={handleDescriptionClick} event={event} />
-        <AttendeeBox onAttendeeClick={handleAttendeeClick} event={event} />
+        <AttendeeBox onAttendeeClick={handleAttendeeClick} attendees={attendees} />
         <BroadcastBox onBroadcastClick={handleBroadcastClick} event={event} />
         <div className="rounded-box-container">
           <RoundedBox>Donate</RoundedBox>
-          <ShareButton code={event.id}/>
+          <ShareButton code={event.id} />
         </div>
       </div>
       {isDescriptionModalOpen && (
         <Modal onClose={handleCloseDescriptionModal} event={event}>
           <h2>Description</h2>
           <p>
-            {event.description ||
-              "This event does not have a description yet."}
+            {event.description || "This event does not have a description yet."}
           </p>
         </Modal>
       )}
@@ -95,8 +106,10 @@ export const Events = () => {
         <Modal onClose={handleCloseAttendeeModal} event={event}>
           <h2>Attendees</h2>
           <ul>
-            {event.attendees &&
-              event.attendees.map((attendee) => <li key={attendee}>{attendee}</li>)}
+            {attendees &&
+              attendees.map((attendee) => (
+                <li key={attendee.email}>{attendee.email}</li>
+              ))}
           </ul>
         </Modal>
       )}
