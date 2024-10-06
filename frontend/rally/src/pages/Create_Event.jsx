@@ -8,7 +8,8 @@ function CreateEventPage() {
         eventLocation: '',
         eventDescription: '',
         eventImage: null,
-        eventPublic: false
+        eventPublic: false,
+        creator: localStorage.getItem('email')
     });
 
     const handleChange = (e) => {
@@ -42,6 +43,7 @@ function CreateEventPage() {
 
             const result = await response.json();
             console.log('Event created successfully:', result);
+            window.location.href = '/';
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
         }
